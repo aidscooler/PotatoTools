@@ -28,13 +28,7 @@
             </el-form-item>
             <el-form-item label="重复次数">
               <el-input-number v-model="form.repeat" :min="1" :max="10" />
-            </el-form-item>
-            <el-form-item label="代码生成方式">
-            <el-radio-group v-model="codeGenerationType">
-                <el-radio label="native">原生 CSS</el-radio>
-                <el-radio label="animateCSS">Animate.css 类</el-radio>
-            </el-radio-group>
-            </el-form-item>            
+            </el-form-item>          
             <el-form-item>
               <el-button type="primary" @click="applyAnimation">应用动画</el-button>
               <el-button type="primary" @click="copyToClipboard">复制代码</el-button>
@@ -48,7 +42,7 @@
           </el-card>
   
           <el-card class="code-card">
-            <pre><code>{{ highlightedCode }}</code></pre>
+            <pre><code v-html="highlightedCode"></code></pre>
           </el-card>
         </div>
   
@@ -63,7 +57,7 @@
             <li>导入：<br/><code>import 'animate.css';</code></li>
             </ol>
             <el-button type="primary" size="small" @click="openAnimateCssWebsite">
-                访问官网
+                访问animate.css开源仓库
             </el-button>
           </el-card>
         </div>
@@ -76,6 +70,7 @@
     import hljs from 'highlight.js/lib/core';
     import css from 'highlight.js/lib/languages/css';
     import xml from 'highlight.js/lib/languages/xml';
+    import { css as cssBeautify } from 'js-beautify'
     import 'highlight.js/styles/github.css'; // 或者选择其他主题  
 
     hljs.registerLanguage('css', css);
@@ -173,9 +168,15 @@ const generatedCSS = computed(() => {
 });
 
 const highlightedCode = computed(() => {
-  const cssCode = hljs.highlight(generatedCSS.value, { language: 'css' }).value;
-  const htmlCode = hljs.highlight('<div class="animate__animated animate__${form.animation}">\n  您的元素内容\n</div>', { language: 'xml' }).value;
-  return `${cssCode}\n\n/* 使用示例 */\n${htmlCode}`;
+  const beautifiedCSS = cssBeautify(generatedCSS.value, {
+    indent_size: 2,
+    indent_char: ' ',
+    max_preserve_newlines: 2,
+    preserve_newlines: true,
+    end_with_newline: false
+  });
+
+  return hljs.highlight(beautifiedCSS, { language: 'css' }).value;
 });
 
   const copyToClipboard = () => {
@@ -186,7 +187,7 @@ const highlightedCode = computed(() => {
     })
   }
   const openAnimateCssWebsite = () => {
-    window.open('https://animate.style/', '_blank');
+    window.open('https://github.com/animate-css/animate.css', '_blank');
   };
 </script>
   
@@ -265,11 +266,24 @@ const highlightedCode = computed(() => {
   overflow-y: auto;
 }
 .code-card pre {
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 5px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;   
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: left;
+}
+.code-card code {
+  display: block; /* 将 code 元素设置为块级元素 */
+  text-align: left; /* 确保代码左对齐 */
+}   
+.hljs {
+  background: transparent;
+  padding: 0;
+  text-align: left;
 }
 .info-card p {
   color: #606266;
@@ -298,6 +312,45 @@ const highlightedCode = computed(() => {
 
 .info-card .el-button {
   margin-top: 10px;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
 }
 </style>
   
