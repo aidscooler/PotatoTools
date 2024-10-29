@@ -127,7 +127,6 @@
   
   const animatedElement = ref(null)
   const activeGroups = ref(['注意力']) // 默认展开第一个分组
-  const codeGenerationType = ref('native');
   
   const applyAnimation = () => {
     const element = animatedElement.value
