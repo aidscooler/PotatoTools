@@ -1,12 +1,13 @@
 <script setup>
 /**
- * 工具组件入口，中间60%为游戏区域，两边各20%为广告区域
+ * 工具组件入口，中间60%为游戏区域，两边各10%为广告区域
  * 
  */
 
 const props = defineProps({
     id: String,
-    toolPath: String
+    folder: String,
+    toolName: String
 })
 
 const loadingInstance = ref(null)
@@ -30,8 +31,8 @@ const hideLoading = () => {
 //判断是否是手机端，手机端不显示两边的广告位
 const isMobile = ref(false);
 const userAgent = ref(null);
-const framecenterwidth = ref("60%");
-
+const framecenterwidth = ref("80%");
+let module;
 onMounted(async () => {
     userAgent.value = navigator.userAgent;
     isMobile.value  = /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i.test(userAgent.value);
@@ -42,7 +43,8 @@ onMounted(async () => {
     }
     showLoading();
     try {
-        const module = await import(props.toolPath)
+        module = await import(`../components/tools/${props.folder}/${props.toolName}.vue`); 
+        //const module = await import(props.toolPath)
         currentTool.value = markRaw(module.default)      
         hideLoading();
     }catch(error) {
@@ -83,7 +85,7 @@ onMounted(async () => {
 }
 .frameleft {
     float:left;
-    width:20%;
+    width:0%;
     height:inherit !important; 
 }
 .framecenter {

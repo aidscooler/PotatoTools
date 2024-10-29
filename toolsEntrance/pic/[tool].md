@@ -14,11 +14,13 @@ const { params } = useData()
 //console.log(params.value.name);
 
 const id = ref("");
-const path = ref("");
+const toolName = ref("");
+const folder = ref("picTools");
 
 id.value = params.value.tool;
-path.value = '../components/tools/picTools/' + params.value.tool;
+toolName.value = params.value.tool.replace(".vue","");
+//path.value = '../components/tools/picTools/' + params.value.tool;
 //console.log(toolPath.value);
 </script>
 
-<ToolsEntranceV :id="id" :toolPath="path"></ToolsEntranceV>
+<ToolsEntranceV :id="id" :folder="folder" :toolName="toolName"></ToolsEntranceV>

@@ -195,7 +195,7 @@ const debouncedHandleBase64Input = debounce((value: string) => {
   }  
 
   onMounted( async () => {
-    worker = new Worker(new URL('../../library/imageWorker.ts', import.meta.url), { type: 'module' })
+    worker = new Worker(new URL('../../../library/imageWorker.ts', import.meta.url), { type: 'module' })
     //worker = worker = new Worker(WorkerUrl, { type: 'module' }); 
     worker.onmessage = (e: MessageEvent) => {
      if (e.data.type === 'result') {

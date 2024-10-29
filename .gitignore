@@ -27,6 +27,7 @@ pnpm-debug.log*
 
 # vitePress
 cache
+dist
 
 # certs
 certs

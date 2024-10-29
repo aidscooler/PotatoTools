@@ -20,13 +20,23 @@ features:
   - icon: 
       src: /toolsimage/index.jpg
     title: 开发工具
-    details: 日常生活效率提升利器
+    details: 
     link: /devTools
   - icon: 
       src: /FCGames.jpg
     title: 图片工具
-    details: 移植多种游戏机上经典游戏
-    link: /picTools   
+    details: 
+    link: /picTools
+  - icon: 
+      src: /FCGames.jpg
+    title: 视频工具
+    details: 
+    link: /videoTools      
+  - icon: 
+      src: /FCGames.jpg
+    title: 设计工具
+    details: 
+    link: /designTools
 #  - title: Feature B
 #    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #  - title: Feature C

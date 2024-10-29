@@ -61,16 +61,25 @@ export default defineConfig({
     }
   },
   transformPageData(pageData) {//根据配置文件生成home页面的features数据
-    // if (pageData.relativePath === 'classic.md') {
-    //   pageData.frontmatter.features = readJSON('./.vitepress/config/classic.json');
-    // }
-    // else 
     if (pageData.relativePath === 'devTools.md') {
       pageData.frontmatter.features = readJSON('./.vitepress/config/devTools.json');
     }
-    else if (pageData.relativePath === 'picTools.md') {
+    else 
+    if (pageData.relativePath === 'picTools.md') {
       pageData.frontmatter.features = readJSON('./.vitepress/config/picTools.json');
-    }    
+    }
+    else if (pageData.relativePath === 'videoTools.md') {
+      pageData.frontmatter.features = readJSON('./.vitepress/config/videoTools.json');
+    } 
+    else if (pageData.relativePath === 'designTools.md') {
+      pageData.frontmatter.features = readJSON('./.vitepress/config/designTools.json');
+    }     
+    // console.log(pageData.relativePath);
+    // if (pageData.relativePath in ['devTools.md','picTools.md','videoTools.md','designTools.md']) {
+    //   const filepath = './.vitepress/config/' + pageData.relativePath.replace('.md','.json')
+    //   pageData.frontmatter.features = readJSON(filepath)   
+    //   console.log(pageData.frontmatter.features);
+    // }
   },    
   vite: { 
     plugins: [

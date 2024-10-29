@@ -15,7 +15,7 @@ const { params } = useData()
 
 const id = ref("");
 const toolName = ref("");
-const folder = ref("devTools");
+const folder = ref("designTools");
 
 id.value = params.value.tool;
 toolName.value = params.value.tool.replace(".vue","");
