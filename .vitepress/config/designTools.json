@@ -10,5 +10,11 @@
         "title": "CSS3动画设计",
         "details": "",
         "link": "/toolsEntrance/design/AnimationGenerator.vue"
+    },
+    {
+        "icon": { "src": "" },
+        "title": "颜色渐变设计",
+        "details": "",
+        "link": "/toolsEntrance/design/Gradient.vue"
     }    
 ]

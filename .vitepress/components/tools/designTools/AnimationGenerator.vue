@@ -2,7 +2,7 @@
     <el-card class="animation-generator">
       <template #header>
         <div class="card-header">
-          <span>CSS3 动画生成器</span>
+          <span>CSS3 动画设计</span>
         </div>
       </template>
       <div class="content-wrapper">
@@ -41,7 +41,7 @@
             </div>
           </el-card>
   
-          <el-card class="code-card">
+          <el-card class="code-card" style="padding:0px">
             <pre><code v-html="highlightedCode"></code></pre>
           </el-card>
         </div>
@@ -198,7 +198,7 @@ const highlightedCode = computed(() => {
 
 .content-wrapper {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
 .animation-list {
@@ -211,7 +211,7 @@ const highlightedCode = computed(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   max-height: 600px;
   overflow-y: auto;
 }
@@ -261,7 +261,7 @@ const highlightedCode = computed(() => {
   border-radius: 5px;
 }
 .code-card {
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
 }
 .code-card pre {
@@ -350,6 +350,9 @@ const highlightedCode = computed(() => {
 .hljs-class .hljs-title {
   color: #458;
   font-weight: bold;
+}
+.el-form-item {
+  margin-bottom: 10px;
 }
 </style>
   

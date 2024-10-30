@@ -59,8 +59,10 @@ onMounted(async () => {
 <template>
     <div class="iframecontainer">
         <div v-if="!isMobile" class="frameleft">
+            <!--
             <iframe src="/ads/displayVerticalLeft.html">
             </iframe>
+            -->
         </div>
 
         <div class="framecenter">
