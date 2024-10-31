@@ -27,7 +27,6 @@
     "@types/node": "^20.14.11",
     "animate.css": "^4.1.1",
     "browser-image-compression": "^2.0.2",
-    "chroma-js": "^3.1.2",
     "crypto-js": "^4.2.0",
     "detect-gpu": "^5.0.53",
     "element-plus": "^2.7.7",
