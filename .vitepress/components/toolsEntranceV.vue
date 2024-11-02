@@ -45,7 +45,7 @@ onMounted(async () => {
     try {
         module = await import(`../components/tools/${props.folder}/${props.toolName}.vue`); 
         //const module = await import(props.toolPath)
-        currentTool.value = markRaw(module.default)      
+        currentTool.value = markRaw(module.default)     
         hideLoading();
     }catch(error) {
         console.log(error);
@@ -54,10 +54,17 @@ onMounted(async () => {
         hideLoading();
     }
 })
+//目前 Gradient子组件需要与 父组件通信，渲染父组件背景颜色
+const iframecontainer = ref(null);
 
+const updateBackground = (cssCode) => {
+  if (iframecontainer.value) {
+    iframecontainer.value.style/*.backgroundImage*/ = cssCode;
+  }
+};
 </script>
 <template>
-    <div class="iframecontainer">
+    <div class="iframecontainer" ref="iframecontainer">
         <div v-if="!isMobile" class="frameleft">
             <!--
             <iframe src="/ads/displayVerticalLeft.html">
@@ -65,8 +72,8 @@ onMounted(async () => {
             -->
         </div>
 
-        <div class="framecenter">
-            <component :id=id :is="currentTool" v-if="currentTool" />
+        <div class="framecenter" style="background-color: transparent;">
+            <component :is="currentTool" @update-background="updateBackground" v-if="currentTool" />
         </div>
         
         <div v-if="!isMobile" class="frameright">
@@ -74,7 +81,6 @@ onMounted(async () => {
             </iframe>
         </div>
     </div>
-
 </template>
 <style scoped>
 .iframecontainer{

@@ -9,7 +9,8 @@
                 v-for="direction in directions" 
                 :key="direction.value" 
                 :value="direction.value" 
-                class="custom-radio-button">
+                class="custom-radio-button"
+                :style="isDirectionSelected(direction.value)">
                 <el-icon>
                   <component :is="direction.icon"></component>
                 </el-icon>
@@ -39,10 +40,11 @@
                 <input
                   :value="color"
                   @input="updateColor($event, index)"
-                  @focus="openPickr($event, index)"
+                  @focus="openPickr(index)"
                   :style="{ backgroundColor: color }"
                   class="color-input"
                 />
+                <div :ref="el => setPickrContainerRef(el, index)" style="visibility: hidden;position: absolute;"></div>
               </div>
             </div>
           </div>
@@ -79,27 +81,27 @@
   ];
   //预设颜色渐变
   const presetGradients = [
-    { name: '日落', colors: ['#ff7e5f', '#feb47b'] },
-    { name: '海洋', colors: ['#2193b0', '#6dd5ed'] },
-    { name: '森林', colors: ['#11998e', '#38ef7d'] },
-    { name: '紫罗兰', colors: ['#8e2de2', '#4a00e0'] },
-    { name: '柑橘', colors: ['#fdc830', '#f37335'] },
-    { name: '极光', colors: ['#00c6ff', '#0072ff'] },
-    { name: '樱花', colors: ['#ffc3a0', '#ffafbd'] },
-    { name: '薄荷', colors: ['#00b09b', '#96c93d'] },
-    { name: '黄昏', colors: ['#ff9966', '#ff5e62'] },
-    { name: '莓果', colors: ['#b91d73', '#f953c6'] },
-    { name: '青柠', colors: ['#7ed56f', '#28b485'] },
-    { name: '蓝莓', colors: ['#4e54c8', '#8f94fb'] },
-    { name: '桃子', colors: ['#ffb347', '#ffcc33'] },
-    { name: '薰衣草', colors: ['#7742b2', '#f180ff'] },
-  ];  
+    { name: '日落', colors: ['#ff512f', '#dd2476'] },
+    { name: '海洋', colors: ['#2b5876', '#4e4376'] },
+    { name: '森林', colors: ['#134e5e', '#71b280'] },
+    { name: '紫罗兰', colors: ['#41295a', '#2f0743'] },
+    { name: '柑橘', colors: ['#e96443', '#904e95'] },
+    { name: '极光', colors: ['#00c9ff', '#92fe9d'] },
+    { name: '樱花', colors: ['#ec008c', '#fc6767'] },
+    { name: '薄荷', colors: ['#56ab2f', '#a8e063'] },
+    { name: '黄昏', colors: ['#ff5f6d', '#ffc371'] },
+    { name: '莓果', colors: ['#c31432', '#240b36'] },
+    { name: '青柠', colors: ['#009245', '#fcee21'] },
+    { name: '蓝莓', colors: ['#396afc', '#2948ff'] },
+    { name: '桃子', colors: ['#ed4264', '#ffedbc'] },
+    { name: '薰衣草', colors: ['#c04848', '#480048'] },
+  ];
   const gradientDirection = ref('to right');
-  const gradientColors = ref(['#051937', '#00bf72']);
+  const gradientColors = ref(['#051937', '#a8eb12']);
   const generatedCSS = ref('');
   const generatedSVG = ref('');
-  //const pickrContainers = ref([]);
   const pickrInstances = ref([]);
+  const PickrContainers = ref<HTMLElement[]>([]);
   const outputFormat = ref('css');
 
   // RGB 到 LCH 的转换函数
@@ -202,10 +204,14 @@ const interpolateColors = (colors: string[], steps: number): string[] => {
       result.push(interpolatedColor);
     }
   }
-
   return result;
 };
 
+const setPickrContainerRef = (el, index) => {
+  if (el) {
+    PickrContainers.value[index] = el;
+  }  
+}
 const loadPickr = () => {
   return import('@simonwep/pickr').then(module => {
     Pickr = module.default;
@@ -256,8 +262,9 @@ const createColorPicker = (container, color, index) => {
       }
     }
   });
-  pickr.on('save', (color) => {
+  pickr.on('save', (color, instance) => {
     gradientColors.value[index] = color.toHEXA().toString();
+    instance.hide();
   });
   pickrInstances.value[index] = pickr;
 };
@@ -271,19 +278,10 @@ const updateColor = (event, index) => {
   }
 };
 
-const openPickr = (event, index) => {
-  const container = event.target;
-  createColorPicker(container, gradientColors.value[index], index);
+const openPickr = (index) => {
+  createColorPicker(PickrContainers.value[index], gradientColors.value[index], index)
   pickrInstances.value[index].show();
 };
-  
-// const initColorPickers = () => {
-//   pickrContainers.value.forEach((container, index) => {
-//     if (container) {
-//       createColorPicker(container, gradientColors.value[index], index);
-//     }
-//   });
-// };
   
 onMounted(() => {
   loadPickr().catch(error => {
@@ -291,11 +289,6 @@ onMounted(() => {
   });
 });
   
-// watch(gradientColors, () => {
-//     nextTick(() => {
-//         initColorPickers();
-//     });
-// }, { deep: true });
 const applyPreset = (preset) => {
   gradientColors.value = [...preset.colors];
 };
@@ -303,34 +296,56 @@ const applyPreset = (preset) => {
 const isPresetSelected = (preset) => {
   return JSON.stringify(preset.colors) === JSON.stringify(gradientColors.value);
 };
+const isDirectionSelected = (direction) => {
+  if (gradientDirection.value === direction) {
+    return "border: 2px solid white";
+  }else {
+    return "";
+  }
+}
+//与父组件通信
+const emit = defineEmits(['update-background']);
 //生成颜色渐变
 const generateGradient = () => {
   let type = 'linear-gradient';
   if (gradientDirection.value === 'circle') {
     type = 'radial-gradient';
   }
+  //生成CSS代码
   const generatedColors = interpolateColors(gradientColors.value,5);
-  //console.log("Generated colors:", generatedColors);
   const colorString = generatedColors.join(',');
   const gradientCSS = `background-image: ${type}(${gradientDirection.value}, ${colorString});`;
   generatedCSS.value = gradientCSS;
-  // 生成 SVG
-  // const svgGradient = `
-  //   <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-  //     <defs>
-  //       <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-  //         ${adjustedColors.map((color, index) => 
-  //           `<stop offset="${index / (adjustedColors.length - 1) * 100}%" stop-color="${color}" />`
-  //         ).join('')}
-  //       </linearGradient>
-  //     </defs>
-  //     <rect width="100%" height="100%" fill="url(#gradient)" />
-  //   </svg>
-  // `;
-  // generatedSVG.value = svgGradient;
+  // 生成SVG代码
+  let svgGradientType = 'linearGradient';
+  let gradientAttributes = `x1="0%" y1="0%" x2="100%" y2="0%"`;
 
-  document.body.style.backgroundImage = `${type}(${gradientDirection.value}, ${colorString})`;
+  if (gradientDirection.value === 'circle') {
+    svgGradientType = 'radialGradient';
+    gradientAttributes = `cx="50%" cy="50%" r="50%" fx="50%" fy="50%"`;
+  }
+
+  const stops = generatedColors.map((color, index) => 
+    `<stop offset="${(index / (generatedColors.length - 1)) * 100}%" stop-color="${color}" />`
+  ).join('');
+
+  const svgGradient = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <${svgGradientType} id="gradient" ${gradientAttributes}>
+          ${stops}
+        </${svgGradientType}>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#gradient)" />
+    </svg>
+  `;
+
+  generatedSVG.value = svgGradient;
+
+  //document.body.style.backgroundImage = `${type}(${gradientDirection.value}, ${colorString})`;
+  emit('update-background', generatedCSS.value);
 };
+generateGradient();
 </script>
 <style scoped>
 .gradient-tool {
@@ -368,7 +383,8 @@ const generateGradient = () => {
 :deep(.el-radio-button__inner){
   background-color: transparent;
   --el-radio-button-checked-bg-color: transparent;
-  border-left: 1px solid rgba(220, 223, 230, 1);
+  /* border-left: 1px solid rgba(220, 223, 230, 1); */
+  border: 0px;
   box-shadow: 0px 0 0 0 #409eff !important;
 }
 .settings-area {
@@ -393,7 +409,8 @@ const generateGradient = () => {
   }
   .color-inputs {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: 30px;
 }
 
 .color-input {
@@ -429,6 +446,9 @@ const generateGradient = () => {
   }
   :deep(.el-scrollbar__bar.is-horizontal) {
     opacity: 1; /* 始终显示水平滚动条 */
-  }  
+  }
+  :deep(.el-radio-button:first-child .el-radio-button__inner) {
+    border-left: 0px !important;
+  }
 </style>
   
