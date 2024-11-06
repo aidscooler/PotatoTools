@@ -7,7 +7,9 @@
 const props = defineProps({
     id: String,
     folder: String,
-    toolName: String
+    toolName: String,
+    showLeftads: Boolean,
+    showRightads: Boolean
 })
 
 const loadingInstance = ref(null)
@@ -31,7 +33,7 @@ const hideLoading = () => {
 //判断是否是手机端，手机端不显示两边的广告位
 const isMobile = ref(false);
 const userAgent = ref(null);
-const framecenterwidth = ref("80%");
+const framecenterwidth = ref("70%");
 let module;
 onMounted(async () => {
     userAgent.value = navigator.userAgent;
@@ -58,25 +60,25 @@ onMounted(async () => {
 const iframecontainer = ref(null);
 
 const updateBackground = (cssCode) => {
-  if (iframecontainer.value) {
-    iframecontainer.value.style/*.backgroundImage*/ = cssCode;
+  if (iframecontainer.value) {/*.backgroundImage*/
+    iframecontainer.value.style = cssCode;
   }
 };
+const showLeftads = ref(props.showLeftads);
+const showRightads = ref(props.showRightads)
 </script>
 <template>
     <div class="iframecontainer" ref="iframecontainer">
-        <div v-if="!isMobile" class="frameleft">
-            <!--
+        <div v-if="!isMobile && showLeftads" class="frameleft">
             <iframe src="/ads/displayVerticalLeft.html">
             </iframe>
-            -->
         </div>
 
         <div class="framecenter" style="background-color: transparent;">
             <component :is="currentTool" @update-background="updateBackground" v-if="currentTool" />
         </div>
         
-        <div v-if="!isMobile" class="frameright">
+        <div v-if="!isMobile && showRightads" class="frameright">
             <iframe src="/ads/displayVertical.html">
             </iframe>
         </div>
@@ -93,7 +95,7 @@ const updateBackground = (cssCode) => {
 }
 .frameleft {
     float:left;
-    width:0%;
+    width:15%;
     height:inherit !important; 
 }
 .framecenter {
@@ -104,7 +106,7 @@ const updateBackground = (cssCode) => {
 }
 .frameright {
     float:left;
-    width:20%;
+    width:15%;
     height:inherit !important; 
 }
 iframe {

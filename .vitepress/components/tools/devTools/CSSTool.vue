@@ -6,27 +6,9 @@
             <span>采用js-beautify实现美化(缩进为两个空格)、csso实现压缩(去掉多余的空格、换行、注释)</span>
           </div>
         </template>
-        <el-row :gutter="20">
-          <el-col :span="24" :md="12">
-            <el-input
-              v-model="inputCSS"
-              type="textarea"
-              :rows="15"
-              placeholder="请输入 CSS 代码"
-            ></el-input>
-          </el-col>
-          <el-col :span="24" :md="12">
-            <el-input
-              v-model="outputCSS"
-              type="textarea"
-              :rows="15"
-              placeholder="处理后的 CSS 代码将显示在这里"
-            ></el-input>
-          </el-col>
-        </el-row>
         <el-row class="mt-4">
-          <el-col :span="24">
-            <el-button-group>
+          <el-col :span="24" style="text-align:left">
+            <el-button-group style="margin-bottom:20px">
               <el-button type="primary" @click="beautifyCSS" :disabled="!inputCSS" :loading="beautify_loading">
                 <i-ep-magic-stick />美化 CSS
               </el-button>
@@ -37,6 +19,24 @@
                 <i-ep-download />下载 CSS
               </el-button>
             </el-button-group>
+          </el-col>
+        </el-row>        
+        <el-row :gutter="20">
+          <el-col :span="24" :md="12">
+            <el-input
+              v-model="inputCSS"
+              type="textarea"
+              :rows="20"
+              placeholder="请输入 CSS 代码"
+            ></el-input>
+          </el-col>
+          <el-col :span="24" :md="12">
+            <el-input
+              v-model="outputCSS"
+              type="textarea"
+              :rows="20"
+              placeholder="处理后的 CSS 代码将显示在这里"
+            ></el-input>
           </el-col>
         </el-row>
       </el-card>
@@ -104,7 +104,7 @@
   
   <style scoped>
   .css-tool {
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .mt-4 {

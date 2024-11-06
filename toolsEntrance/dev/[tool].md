@@ -23,4 +23,4 @@ toolName.value = params.value.tool.replace(".vue","");
 //console.log(toolPath.value);
 </script>
 
-<ToolsEntranceV :id="id" :folder="folder" :toolName="toolName"></ToolsEntranceV>
+<ToolsEntranceV :id="id" :folder="folder" :toolName="toolName" :showLeftads=true :showRightads=true></ToolsEntranceV>

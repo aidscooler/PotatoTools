@@ -23,18 +23,20 @@
         </el-form-item>
       </el-form>
     </div>
-
-    <div class="button-group">
-      <el-button type="success" @click="compressImages" :disabled="fileList.length === 0 || isCompressing">
-        压缩图片
-      </el-button>
-      <el-button type="primary" @click="downloadImages" :disabled="compressedFiles.length === 0">
-        下载图片
-      </el-button>
-      <el-button type="danger" @click="clearFiles" :disabled="fileList.length === 0">
-        清空图片
-      </el-button>
+    <div style="text-align: left;">
+      <el-button-group>
+        <el-button type="success" @click="compressImages" :disabled="fileList.length === 0 || isCompressing">
+          <i-ep-files /> 压缩图片
+        </el-button>
+        <el-button type="primary" @click="downloadImages" :disabled="compressedFiles.length === 0">
+          <i-ep-download /> 下载图片
+        </el-button>
+        <el-button type="danger" @click="clearFiles" :disabled="fileList.length === 0">
+          <i-ep-delete />  清空图片
+        </el-button>
+      </el-button-group>
     </div>
+
     <el-progress v-if="isCompressing" :percentage="compressionProgress" />
     <el-upload
       class="upload-area custom-upload"
@@ -233,7 +235,7 @@ const downloadImages = async () => {
 
 <style scoped>
 .image-compressor {
-  max-width: calc(100vw - 250px); /* 100vw 是视口宽度，减去左侧工具列表的宽度 */
+  max-width: 1200px; 
   width: 100%; /* 确保卡片能够在小屏幕上缩小 */
   margin: 0 auto;
   box-sizing: border-box; /* 确保 padding 不会增加元素的总宽度 */

@@ -152,10 +152,11 @@
         //console.log(color.toHEXA().toString());
         updateFormattedColorValues(color)
       }); 
-      pickr.value.on('save', (color: Pickr.HSVaColor) => {
+      pickr.value.on('save', (color: Pickr.HSVaColor,instance) => {
         selectedColor.value = color;
         //console.log(color.toHEXA().toString());
         updateFormattedColorValues(color)
+        instance.hide();
       });    
       pickr.value.on('clear', (color: Pickr.HSVaColor) => {
         selectedColor.value = null;

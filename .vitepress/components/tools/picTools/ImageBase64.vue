@@ -223,8 +223,9 @@ const debouncedHandleBase64Input = debounce((value: string) => {
   
 <style scoped>
 .image-base64-converter {
-  max-width: 1920px;
+  max-width: 1200px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
 .card-header {

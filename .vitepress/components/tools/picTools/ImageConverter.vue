@@ -20,27 +20,30 @@
         >
           <el-button type="primary">选择图片</el-button>
         </el-upload>
-        <el-button 
-          type="success" 
-          @click.stop="convertImages" 
-          :disabled="fileList.length === 0 || isConverting"
-        >
-          转换为JPG
-        </el-button>
-        <el-button 
-          type="primary" 
-          @click.stop="downloadImages" 
-          :disabled="convertedImages.length === 0 || isConverting"
-        >
-          下载
-        </el-button>
-        <el-button 
-          type="danger" 
-          @click.stop="clearFiles" 
-          :disabled="fileList.length === 0 && convertedImages.length === 0"
-        >
-          清空图片
-        </el-button>
+        <el-button-group>
+          <el-button 
+            type="success" 
+            @click.stop="convertImages" 
+            :disabled="fileList.length === 0 || isConverting"
+          >
+            <i-ep-switch /> 转换为JPG
+          </el-button>
+          <el-button 
+            type="primary" 
+            @click.stop="downloadImages" 
+            :disabled="convertedImages.length === 0 || isConverting"
+          >
+            <i-ep-download /> 下载图片
+          </el-button>
+          <el-button 
+            type="danger" 
+            @click.stop="clearFiles" 
+            :disabled="fileList.length === 0 && convertedImages.length === 0"
+          >
+            <i-ep-delete />  清空图片
+          </el-button>
+        </el-button-group>
+
       </div>
   
       <div class="file-list">
@@ -271,7 +274,7 @@
   }
   .button-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     margin-top: 20px;
     margin-bottom: 20px;
   }

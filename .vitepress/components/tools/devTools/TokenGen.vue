@@ -98,7 +98,7 @@
   
   <style scoped>
   .token-generator {
-    max-width: 1920px;
+    max-width: 1000px;
     margin: 0 auto;
   }
   

@@ -4,5 +4,5 @@
     { "text": "图片工具", "link": "/picTools"},
     { "text": "设计工具", "link": "/designTools"},      
     { "text": "音/视频工具", "link": "/videoTools" },
-    { "text": "关于", "link": "/blog/about/about"}
+    { "text": "联系我们", "link": "/blog/about/contact"}
 ]

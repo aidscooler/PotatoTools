@@ -25,28 +25,9 @@
             </div>
           </div>
         </el-alert>
-        
-        <el-row :gutter="20">
-          <el-col :span="24" :md="12">
-            <el-input
-              v-model="inputCode"
-              type="textarea"
-              :rows="15"
-              placeholder="请输入 JavaScript 代码"
-            />
-          </el-col>
-          <el-col :span="24" :md="12">
-            <el-input
-              v-model="outputCode"
-              type="textarea"
-              :rows="15"
-              placeholder="处理结果将会显示在这"
-            />
-          </el-col>
-        </el-row>
         <el-row class="mt-4">
-          <el-col :span="24">
-            <el-button-group style="margin-top: 0px">
+          <el-col :span="24" style="text-align:left;">
+            <el-button-group style="margin-top: 0px;margin-bottom: 20px;">
               <el-button type="primary" @click="processCode('beautify')" :disabled="!inputCode" :loading="loading">
                 <i-ep-magic-stick /> 美化
               </el-button>
@@ -60,6 +41,24 @@
                 <i-ep-download /> 下载
               </el-button>
             </el-button-group>
+          </el-col>
+        </el-row>        
+        <el-row :gutter="20">
+          <el-col :span="24" :md="12">
+            <el-input
+              v-model="inputCode"
+              type="textarea"
+              :rows="20"
+              placeholder="请输入 JavaScript 代码"
+            />
+          </el-col>
+          <el-col :span="24" :md="12">
+            <el-input
+              v-model="outputCode"
+              type="textarea"
+              :rows="20"
+              placeholder="处理结果将会显示在这"
+            />
           </el-col>
         </el-row>
       </el-main>
@@ -179,7 +178,7 @@
   
   <style scoped>
   .js-tool {
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .card-header {

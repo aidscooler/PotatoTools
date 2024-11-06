@@ -6,28 +6,6 @@
         </div>
       </template>
       <el-form>
-        <el-row :gutter="20">
-          <el-col :span="24" :md="12">
-            <el-form-item >
-              <el-input
-                v-model="inputJson"
-                type="textarea"
-                :rows="15"
-                placeholder="请输入 JSON 字符串"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24" :md="12">
-            <el-form-item>
-              <el-input
-                v-model="outputJson"
-                type="textarea"
-                :rows="15"
-                placeholder="处理结果将会显示在这"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
         <el-form-item>
           <el-checkbox v-model="sortKeys">排序 Keys</el-checkbox>
         </el-form-item>
@@ -39,12 +17,14 @@
             <el-button type="success" @click="compress" :disabled="!inputJson" :loading="loading">
                 <i-ep-delete />压缩
             </el-button>
+            <!--
             <el-button type="warning" @click="escape" :disabled="!inputJson" :loading="loading">
                 <i-ep-right />转义
             </el-button>
             <el-button type="info" @click="unescape" :disabled="!inputJson" :loading="loading">
                 <i-ep-back />去转义
             </el-button>
+            -->
             <el-button type="danger" @click="validate" :disabled="!inputJson" :loading="loading">
                 <i-ep-check />校验
             </el-button>
@@ -52,7 +32,29 @@
                 <i-ep-download />下载
             </el-button>
           </el-button-group>
-        </el-form-item>
+        </el-form-item>        
+        <el-row :gutter="20">
+          <el-col :span="24" :md="12">
+            <el-form-item >
+              <el-input
+                v-model="inputJson"
+                type="textarea"
+                :rows="20"
+                placeholder="请输入 JSON 字符串"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" :md="12">
+            <el-form-item>
+              <el-input
+                v-model="outputJson"
+                type="textarea"
+                :rows="20"
+                placeholder="处理结果将会显示在这"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </el-card>
   </template>
@@ -174,7 +176,7 @@ const validate = () => {
   
   <style scoped>
   .json-tool {
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .card-header {
