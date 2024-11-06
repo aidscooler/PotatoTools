@@ -52,10 +52,28 @@
           <div v-if="generatedCSS" class="generated-css">
             <el-tabs v-model="outputFormat">
               <el-tab-pane label="CSS" name="css">
-                <el-input type="textarea" :rows="3" v-model="generatedCSS" readonly></el-input>
+                <div class="code-area">
+                  <el-input
+                    type="textarea"
+                    :rows="6"
+                    v-model="generatedCSS"
+                    readonly
+                    class="custom-textarea"
+                  ></el-input>
+                  <el-button @click="copyToClipboard(generatedCSS)" size="small" type="primary">复制 CSS</el-button>
+                </div>
               </el-tab-pane>
               <el-tab-pane label="SVG" name="svg">
-                <el-input type="textarea" :rows="3" v-model="generatedSVG" readonly></el-input>
+                <div class="code-area">
+                  <el-input
+                    type="textarea"
+                    :rows="6"
+                    v-model="generatedSVG"
+                    readonly
+                    class="custom-textarea"
+                  ></el-input>
+                  <el-button @click="copyToClipboard(generatedSVG)" size="small" type="primary">复制 SVG</el-button>
+                </div>
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -103,7 +121,6 @@
   const pickrInstances = ref([]);
   const PickrContainers = ref<HTMLElement[]>([]);
   const outputFormat = ref('css');
-
   // RGB 到 LCH 的转换函数
   const rgbToLch = (rgb: RGB): LCH => {
     let [r, g, b] = rgb.map(x => x / 255);
@@ -129,7 +146,6 @@
 
     return [l, c, h];
   };
-
   // LCH 到 RGB 的转换函数
   const lchToRgb = (lch: LCH): RGB => {
     let [l, c, h] = lch;
@@ -162,7 +178,6 @@
 const interpolateLCH = (lch1: LCH, lch2: LCH, t: number): LCH => {
   let [l1, c1, h1] = lch1;
   let [l2, c2, h2] = lch2;
-  //const t = step;// / (totalSteps - 1);
   // 亮度插值：
   const l = l1 + (l2 - l1) * t;//Math.pow(t, 0.85);移除缓动
   // 色度插值：
@@ -324,11 +339,9 @@ const generateGradient = () => {
     svgGradientType = 'radialGradient';
     gradientAttributes = `cx="50%" cy="50%" r="50%" fx="50%" fy="50%"`;
   }
-
   const stops = generatedColors.map((color, index) => 
     `<stop offset="${(index / (generatedColors.length - 1)) * 100}%" stop-color="${color}" />`
   ).join('');
-
   const svgGradient = `
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
       <defs>
@@ -339,11 +352,16 @@ const generateGradient = () => {
       <rect width="100%" height="100%" fill="url(#gradient)" />
     </svg>
   `;
-
   generatedSVG.value = svgGradient;
-
-  //document.body.style.backgroundImage = `${type}(${gradientDirection.value}, ${colorString})`;
   emit('update-background', generatedCSS.value);
+};
+const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text).then(() => {
+    ElMessage.success('复制成功');
+  }).catch(err => {
+    console.error('复制失败:', err);
+    ElMessage.error('复制失败');
+  });
 };
 generateGradient();
 </script>
@@ -368,7 +386,6 @@ generateGradient();
 .direction-selector {
   margin-bottom: 0px;
 }
-
 .preset-list {
   width: 100%;
   padding: 0 10px; /* 添加左右内边距 */
@@ -396,7 +413,6 @@ generateGradient();
   background-color: transparent !important;
   margin-left: 10px !important;
 }
-
 .custom-radio-button :deep(.el-icon) {
   color: white;
   font-weight: bold;
@@ -412,7 +428,6 @@ generateGradient();
   justify-content: center;
   gap: 30px;
 }
-
 .color-input {
   width: 80px;
   height: 40px;
@@ -423,7 +438,6 @@ generateGradient();
   color: white;
   font-weight: bold;
 }
-
   :deep(.el-textarea__inner) {
     background-color: transparent;
     color: white;
@@ -440,7 +454,6 @@ generateGradient();
     display: flex;
     justify-content: flex-start;
   }
-
   :deep(.el-scrollbar__wrap) {
     overflow-x: auto;
   }
@@ -450,5 +463,53 @@ generateGradient();
   :deep(.el-radio-button:first-child .el-radio-button__inner) {
     border-left: 0px !important;
   }
+  .code-area {
+  position: relative;
+  height: 150px; /* 设置固定高度 */
+}
+
+.code-area .el-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+:deep(.custom-textarea) {
+  height: 100%;
+}
+
+:deep(.custom-textarea .el-textarea__inner) {
+  height: 100% !important;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  color: white;
+  padding-right: 20px; /* 为自定义滚动条留出空间 */
+}
+
+/* 隐藏原生滚动条 */
+:deep(.custom-textarea .el-textarea__inner::-webkit-scrollbar) {
+  width: 0;
+  height: 0;
+}
+
+/* 自定义滚动条样式 */
+:deep(.custom-textarea .el-textarea__inner) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+:deep(.custom-textarea .el-textarea__inner::-webkit-scrollbar) {
+  width: 6px;
+}
+
+:deep(.custom-textarea .el-textarea__inner::-webkit-scrollbar-thumb) {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+:deep(.custom-textarea .el-textarea__inner::-webkit-scrollbar-track) {
+  background-color: transparent;
+}
 </style>
   
