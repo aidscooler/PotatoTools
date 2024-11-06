@@ -9,34 +9,34 @@ hero:
   image:
     src: /potato.png  
   actions:
-    - theme: alt
-      text: JS基础教程
-      link: /blog/JSLearn/info
-    - theme: brand
-      text: CSS基础教程
-      link: /blog/CSSLearn/info
+#    - theme: alt
+#      text: JS基础教程
+#      link: /blog/JSLearn/info
+#    - theme: brand
+#      text: CSS基础教程
+#      link: /blog/CSSLearn/info
 
 features:
   - icon: 
-      src: /toolsimage/index.jpg
+      src: /icons/devtools.gif
     title: 开发工具
     details: 
     link: /devTools
   - icon: 
-      src: /FCGames.jpg
+      src: /icons/pictools.gif
     title: 图片工具
     details: 
     link: /picTools
   - icon: 
-      src: /FCGames.jpg
-    title: 视频工具
-    details: 
-    link: /videoTools      
-  - icon: 
-      src: /FCGames.jpg
+      src: /icons/designtools.gif
     title: 设计工具
     details: 
-    link: /designTools
+    link: /designTools    
+  - icon: 
+      src: /icons/videotools.gif
+    title: 音/视频工具
+    details: 
+    link: /videoTools      
 #  - title: Feature B
 #    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #  - title: Feature C

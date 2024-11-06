@@ -76,12 +76,6 @@ export default defineConfig({
     else if (pageData.relativePath === 'designTools.md') {
       pageData.frontmatter.features = readJSON('./.vitepress/config/designTools.json');
     }     
-    // console.log(pageData.relativePath);
-    // if (pageData.relativePath in ['devTools.md','picTools.md','videoTools.md','designTools.md']) {
-    //   const filepath = './.vitepress/config/' + pageData.relativePath.replace('.md','.json')
-    //   pageData.frontmatter.features = readJSON(filepath)   
-    //   console.log(pageData.frontmatter.features);
-    // }
   },    
   vite: { 
     plugins: [

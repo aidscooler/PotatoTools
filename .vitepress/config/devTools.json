@@ -6,7 +6,7 @@
       "link": "/toolsEntrance/dev/JavaScriptTool.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/devtools/csstool.gif" },
         "title": "CSS工具",
         "details": "",
         "link": "/toolsEntrance/dev/CSSTool.vue"

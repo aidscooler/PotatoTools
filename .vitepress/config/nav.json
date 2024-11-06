@@ -2,7 +2,7 @@
     { "text": "首页", "link": "/" },
     { "text": "开发工具", "link": "/devTools" },
     { "text": "图片工具", "link": "/picTools"},
-    { "text": "视频工具", "link": "/videoTools" },
-    { "text": "设计工具", "link": "/designTools"},    
+    { "text": "设计工具", "link": "/designTools"},      
+    { "text": "音/视频工具", "link": "/videoTools" },
     { "text": "关于", "link": "/blog/about/about"}
 ]
