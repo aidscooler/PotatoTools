@@ -34,6 +34,12 @@ const hideLoading = () => {
 const isMobile = ref(false);
 const userAgent = ref(null);
 const framecenterwidth = ref("70%");
+if(!props.showLeftads && !props.showRightads) {
+    framecenterwidth.value = "100%"
+}else if((!props.showLeftads && props.showRightads) || 
+         (props.showLeftads && !props.showRightads)) {
+    framecenterwidth.value = "85%"
+}
 let module;
 onMounted(async () => {
     userAgent.value = navigator.userAgent;

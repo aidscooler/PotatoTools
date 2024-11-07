@@ -1,48 +1,48 @@
 [
     {
-      "icon": { "src": "" },
+      "icon": { "src": "/icons/pictools/ImageBase64.png" },
       "title": "图片-Base64转换",
       "details": "",
       "link": "/toolsEntrance/pic/ImageBase64.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageSplitter.png" },
         "title": "图片分割",
         "details": "",
         "link": "/toolsEntrance/pic/ImageSplitter.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/IcoGenerator.png" },
         "title": "ICO生成器",
         "details": "",
         "link": "/toolsEntrance/pic/IcoGenerator.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageCompressor.png" },
         "title": "图片压缩工具",
         "details": "",
         "link": "/toolsEntrance/pic/ImageCompressor.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageConverter.png" },
         "title": "图片格式转换",
         "details": "",
         "link": "/toolsEntrance/pic/ImageConverter.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageWatermark.png" },
         "title": "图片加水印",
         "details": "",
         "link": "/toolsEntrance/pic/ImageWatermark.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageCropper.png" },
         "title": "图片裁剪",
         "details": "",
         "link": "/toolsEntrance/pic/ImageCropper.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/pictools/ImageBackgroundRemover.png" },
         "title": "图片去除背景",
         "details": "",
         "link": "/toolsEntrance/pic/ImageBackgroundRemover.vue"

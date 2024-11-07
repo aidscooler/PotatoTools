@@ -1,12 +1,12 @@
 [
     {
-      "icon": { "src": "" },
+      "icon": { "src": "/icons/designtools/ColorPickr.png" },
       "title": "拾色器",
       "details": "",
       "link": "/toolsEntrance/design/ColorPickr.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/designtools/AnimationGenerator.png" },
         "title": "CSS3动画设计",
         "details": "",
         "link": "/toolsEntrance/design/AnimationGenerator.vue"

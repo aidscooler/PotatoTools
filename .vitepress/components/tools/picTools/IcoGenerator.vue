@@ -40,6 +40,14 @@
             </el-select>
           </el-form-item>
         </el-form>
+        <div class="action-buttons">
+          <el-button type="primary" @click="generateIco" :loading="isLoading">
+            重新生成 ICO
+          </el-button>
+          <el-button type="success" @click="downloadIco" :disabled="!previewUrl">
+            下载 ICO
+          </el-button>
+        </div>        
         <div class="preview-container">
           <el-row :gutter="20">
             <el-col :span="12">
@@ -77,14 +85,6 @@
                 </div>
             </el-col>
           </el-row>
-        </div>
-        <div class="action-buttons">
-          <el-button type="primary" @click="generateIco" :loading="isLoading">
-            重新生成 ICO
-          </el-button>
-          <el-button type="success" @click="downloadIco" :disabled="!previewUrl">
-            下载 ICO
-          </el-button>
         </div>
       </el-card>
     </div>
