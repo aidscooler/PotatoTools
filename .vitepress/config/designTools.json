@@ -13,6 +13,12 @@
     },
     {
         "icon": { "src": "" },
+        "title": "自动配色工具",
+        "details": "",
+        "link": "/toolsEntrance/design/ColorPalettes.vue"
+    } ,
+    {
+        "icon": { "src": "" },
         "title": "颜色渐变设计",
         "details": "",
         "link": "/toolsEntrance/design/Gradient.vue"
