@@ -46,5 +46,23 @@
         "title": "WebSocket测试工具",
         "details": "",
         "link": "/toolsEntrance/dev/WebSocketTest.vue"
+    },
+    {
+        "icon": { "src": "/icons/devtools/RSAKeyGen.png" },
+        "title": "RSA密钥生成器",
+        "details": "",
+        "link": "/toolsEntrance/dev/RSAKeyGen.vue"
+    },
+    {
+        "icon": { "src": "/icons/devtools/HashEncrypt.png" },
+        "title": "Hash加密",
+        "details": "",
+        "link": "/toolsEntrance/dev/HashEncrypt.vue"
+    },
+    {
+        "icon": { "src": "/icons/devtools/TimeConverter.png" },
+        "title": "时间戳转换工具",
+        "details": "",
+        "link": "/toolsEntrance/dev/TimeConverter.vue"
     }
 ]

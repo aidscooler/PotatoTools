@@ -1,0 +1,79 @@
+[
+    {
+      "language": "JavaScript",
+      "code": "\/\/ 获取当前时间戳\\nconst timestamp = Date.now();\\n\/\/ 时间戳转换成日期格式\\nconst date = new Date(timestamp);\\nconsole.log(date.toISOString());\\n\/\/ 日期格式转换成时间戳\\nconst newTimestamp = date.getTime();\\nconsole.log(newTimestamp);"
+    },
+    {
+      "language": "Python",
+      "code": "import time \\n # 获取当前时间戳\\n timestamp = int(time.time())\\n # 时间戳转换成日期格式 \\ndate = time.strftime(\"%Y-%m-%d %H:%M:%S\", time.localtime(timestamp))\\nprint(date) \\n# 日期格式转换成时间戳 \\nnew_timestamp = int(time.mktime(time.strptime(date, \"%Y-%m-%d %H:%M:%S\")))\\n print(new_timestamp)"
+    },
+    {
+      "language": "C",
+      "code": "#include <stdio.h>\\n#include <time.h>\\nint main() {\\n\/\/ 获取当前时间戳\\ntime_t timestamp = time(NULL);\\n \/\/ 时间戳转换成日期格式\\nstruct tm *date = localtime(&timestamp);\\nprintf(\"%d-%02d-%02d %02d:%02d:%02d\\n\", date->tm_year + 1900, date->tm_mon + 1, date->tm_mday, date->tm_hour, date->tm_min, date->tm_sec);\\n\/\/ 日期格式转换成时间戳\\ntime_t new_timestamp = mktime(date);\\nprintf(\"%ld\\n\", new_timestamp);\\nreturn 0;\\n}"
+    },
+    {
+      "language": "C++",
+      "code": "\\n#include <iostream>\\n#include <chrono>\\n#include <ctime>\\n\\nint main() {\\n    \/\/ 获取当前时间戳\\n    auto timestamp = std::chrono::system_clock::now().time_since_epoch();\\n    long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timestamp).count();\\n\\n    \/\/ 时间戳转换成日期格式\\n    std::time_t time = milliseconds \/ 1000;\\n    std::tm *date = std::localtime(&time);\\n    std::cout << std::put_time(date, \"%Y-%m-%d %H:%M:%S\") << std::endl;\\n\\n    \/\/ 日期格式转换成时间戳\\n    std::time_t new_timestamp = std::mktime(date);\\n    std::cout << new_timestamp << std::endl;\\n\\n    return 0;\\n}\\n"
+    },
+    {
+      "language": "Java",
+      "code": "\\nimport java.time.Instant;\\nimport java.time.LocalDateTime;\\nimport java.time.ZoneId;\\nimport java.time.format.DateTimeFormatter;\\n\\npublic class Main {\\n    public static void main(String[] args) {\\n        \/\/ 获取当前时间戳\\n        long timestamp = Instant.now().getEpochSecond();\\n\\n        \/\/ 时间戳转换成日期格式\\n        LocalDateTime date = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneId.systemDefault().getRules().getOffset(Instant.now()));\\n        System.out.println(date.format(DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm:ss\")));\\n\\n        \/\/ 日期格式转换成时间戳\\n        long newTimestamp = date.atZone(ZoneId.systemDefault()).toEpochSecond();\\n        System.out.println(newTimestamp);\\n    }\\n}\\n"
+    },
+    {
+      "language": "Swift",
+      "code": "\\nimport Foundation\\n\\nlet formatter = DateFormatter()\\nformatter.dateFormat = \"yyyy-MM-dd HH:mm:ss\"\\n\\n\/\/ 获取当前时间戳\\nlet timestamp = Int(Date().timeIntervalSince1970)\\n\\n\/\/ 时间戳转换成日期格式\\nlet date = Date(timeIntervalSince1970: TimeInterval(timestamp))\\nprint(formatter.string(from: date))\\n\\n\/\/ 日期格式转换成时间戳\\nlet newTimestamp = Int(date.timeIntervalSince1970)\\nprint(newTimestamp)\\n"
+    },
+    {
+      "language": "Go",
+      "code": "\\npackage main\\n\\nimport (\\n    \"fmt\"\\n    \"time\"\\n)\\n\\nfunc main() {\\n    \/\/ 获取当前时间戳\\n    timestamp := time.Now().Unix()\\n\\n    \/\/ 时间戳转换成日期格式\\n    date := time.Unix(timestamp, 0).Format(\"2006-01-02 15:04:05\")\\n    fmt.Println(date)\\n\\n    \/\/ 日期格式转换成时间戳\\n    newTimestamp, _ := time.Parse(\"2006-01-02 15:04:05\", date)\\n    fmt.Println(newTimestamp.Unix())\\n}\\n"
+    },
+    {
+      "language": "Objective-C",
+      "code": "\\n#import <Foundation\/Foundation.h>\\n\\nint main(int argc, const char * argv[]) {\\n    @autoreleasepool {\\n        \/\/ 获取当前时间戳\\n        NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];\\n\\n        \/\/ 时间戳转换成日期格式\\n        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];\\n        [formatter setDateFormat:@\"yyyy-MM-dd HH:mm:ss\"];\\n        NSString *dateString = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timestamp]];\\n        NSLog(@\"%@\", dateString);\\n\\n        \/\/ 日期格式转换成时间戳\\n        NSDate *date = [formatter dateFromString:dateString];\\n        NSTimeInterval newTimestamp = [date timeIntervalSince1970];\\n        NSLog(@\"%f\", newTimestamp);\\n    }\\n    return 0;\\n}\\n"
+    },
+    {
+      "language": "MySQL",
+      "code": "\\n-- 获取当前时间戳\\nSELECT UNIX_TIMESTAMP();\\n\\n-- 时间戳转换成日期格式\\nSELECT FROM_UNIXTIME(UNIX_TIMESTAMP());\\n\\n-- 日期格式转换成时间戳\\nSELECT UNIX_TIMESTAMP(FROM_UNIXTIME(UNIX_TIMESTAMP()));\\n"
+    },
+    {
+      "language": "SQLite",
+      "code": "\\n-- 获取当前时间戳\\nSELECT strftime(\"%s\", \"now\");\\n\\n-- 时间戳转换成日期格式\\nSELECT datetime(strftime(\"%s\", \"now\"), \"unixepoch\");\\n\\n-- 日期格式转换成时间戳\\nSELECT strftime(\"%s\", datetime(strftime(\"%s\", \"now\"), \"unixepoch\"));\\n"
+    },
+    {
+      "language": "Erlang",
+      "code": "\\n-module(main).\\n-export([main\/0]).\\n\\nmain() ->\\n    % 获取当前时间戳\\n    Timestamp = erlang:system_time(seconds),\\n\\n    % 时间戳转换成日期格式\\n    {{Year, Month, Day}, {Hour, Minute, Second}} = calendar:now_to_universal_time(os:timestamp()),\\n    io:format(\"~4..0w-~2..0w-~2..0w ~2..0w:~2..0w:~2..0w~n\", [Year, Month, Day, Hour, Minute, Second]),\\n\\n    % 日期格式转换成时间戳\\n    NewTimestamp = calendar:datetime_to_gregorian_seconds({{Year, Month, Day}, {Hour, Minute, Second}}) - 62167219200,\\n    io:format(\"~p~n\", [NewTimestamp]).\\n"
+    },
+    {
+      "language": "PHP",
+      "code": "\\n<?php\\n\/\/ 获取当前时间戳\\n$timestamp = time();\\n\\n\/\/ 时间戳转换成日期格式\\n$date = date(\"Y-m-d H:i:s\", $timestamp);\\necho $date . \"\\n\";\\n\\n\/\/ 日期格式转换成时间戳\\n$newTimestamp = strtotime($date);\\necho $newTimestamp . \"\\n\";\\n?>\\n"
+    },
+    {
+      "language": "Ruby",
+      "code": "\\n# 获取当前时间戳\\ntimestamp = Time.now.to_i\\n\\n# 时间戳转换成日期格式\\ndate = Time.at(timestamp).strftime(\"%Y-%m-%d %H:%M:%S\")\\nputs date\\n\\n# 日期格式转换成时间戳\\nnewTimestamp = Time.strptime(date, \"%Y-%m-%d %H:%M:%S\").to_i\\nputs newTimestamp\\n"
+    },
+    {
+      "language": "Shell",
+      "code": "\\n# 获取当前时间戳\\ntimestamp=$(date +%s)\\n\\n# 时间戳转换成日期格式\\ndate=$(date -d \"@$timestamp\" \"+%Y-%m-%d %H:%M:%S\")\\necho $date\\n\\n# 日期格式转换成时间戳\\nnewTimestamp=$(date -d \"$date\" +%s)\\necho $newTimestamp\\n"
+    },
+    {
+      "language": "Groovy",
+      "code": "\\nimport java.time.LocalDateTime\\nimport java.time.ZoneId\\nimport java.time.format.DateTimeFormatter\\n\\n\/\/ 获取当前时间戳\\nlong timestamp = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()\\n\\n\/\/ 时间戳转换成日期格式\\nLocalDateTime date = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneId.systemDefault().getRules().getOffset(Instant.now()))\\nprintln(date.format(DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm:ss\")))\\n\\n\/\/ 日期格式转换成时间戳\\nlong newTimestamp = date.atZone(ZoneId.systemDefault()).toEpochSecond()\\nprintln(newTimestamp)\\n"
+    },
+    {
+      "language": "Lua",
+      "code": "\\nos.execute(\"date +\\\"%Y-%m-%d %H:%M:%S\\\"\")\\n\\n-- 获取当前时间戳\\nlocal timestamp = os.time()\\n\\n-- 时间戳转换成日期格式\\nlocal date = os.date(\"%Y-%m-%d %H:%M:%S\", timestamp)\\nprint(date)\\n\\n-- 日期格式转换成时间戳\\nlocal newTimestamp = os.time(os.date(\"*t\", date))\\nprint(newTimestamp)\\n"
+    },
+    {
+      "language": ".NET\/C#",
+      "code": "\\nusing System;\\n\\nclass Program\\n{\\n    static void Main()\\n    {\\n        \/\/ 获取当前时间戳\\n        long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();\\n\\n        \/\/ 时间戳转换成日期格式\\n        DateTime date = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;\\n        Console.WriteLine(date.ToString(\"yyyy-MM-dd HH:mm:ss\"));\\n\\n        \/\/ 日期格式转换成时间戳\\n        long newTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds();\\n        Console.WriteLine(newTimestamp);\\n    }\\n}\\n"
+    },
+    {
+      "language": "Dart",
+      "code": "\\nvoid main() {\\n  \/\/ 获取当前时间戳\\n  int timestamp = DateTime.now().toUtc().millisecondsSinceEpoch ~\/ 1000;\\n\\n  \/\/ 时间戳转换成日期格式\\n  DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000, isUtc: true);\\n  print(date.toIso8601String());\\n\\n  \/\/ 日期格式转换成时间戳\\n  int newTimestamp = date.toUtc().millisecondsSinceEpoch ~\/ 1000;\\n  print(newTimestamp);\\n}\\n"
+    },
+    {
+      "language": "Delphi",
+      "code": "\\nprogram TimeExample;\\n\\n{$APPTYPE CONSOLE}\\n\\nuses\\n  SysUtils, DateUtils;\\n\\nvar\\n  Timestamp: Int64;\\n  Date: TDateTime;\\n  NewTimestamp: Int64;\\nbegin\\n  \/\/ 获取当前时间戳\\n  Timestamp := DateTimeToUnix(Now());\\n\\n  \/\/ 时间戳转换成日期格式\\n  Date := UnixToDateTime(Timestamp);\\n  WriteLn(FormatDateTime(\"yyyy-mm-dd hh:nn:ss\", Date));\\n\\n  \/\/ 日期格式转换成时间戳\\n  NewTimestamp := DateTimeToUnix(Date);\\n  WriteLn(NewTimestamp);\\nend.\\n"
+    }
+  ]
+  

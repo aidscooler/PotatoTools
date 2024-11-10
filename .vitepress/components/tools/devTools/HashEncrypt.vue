@@ -126,7 +126,7 @@
   
   <style scoped>
   .hash-tool {
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .card-header {

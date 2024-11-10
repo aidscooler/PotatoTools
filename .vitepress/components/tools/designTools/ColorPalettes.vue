@@ -116,45 +116,174 @@ const openPickr = () => {
   createColorPicker(pikrContainer.value, selectedColor.value)
   pickrInstance.value.show();
 };
-
+//generic gradient 主题
 function genericGradient(): string[] {
-    const L_THRESHOLD = 60
-    const C_THRESHOLD = 60
-    const H_RANGES = [[200, 260]] // 示例范围，需要根据实际情况调整
-    const C_SPECIAL_THRESHOLD = 80
-    const L_SPECIAL_THRESHOLD = 30    
-    let colors = [];
-    colors[0] = selectedColor.value;
-    colors[1] = '#F9F871'
+  let colors = [];
+  colors[0] = selectedColor.value;
 
-    const rgb = [parseInt(selectedColor.value.slice(1, 3), 16), parseInt(selectedColor.value.slice(3, 5), 16), parseInt(selectedColor.value.slice(5, 7), 16)] as RGB;
+  // 特殊情况处理保持不变
+  if (selectedColor.value.toUpperCase() === '#F9F871') {
+    colors[1] = '#2F4858';
+    return interpolateColors(colors, 6);
+  } else if (selectedColor.value.toUpperCase() === '#2F4858') {
+    colors[1] = '#F9F871';
+    return interpolateColors(colors, 6);
+  }
+
+  const rgb = [parseInt(selectedColor.value.slice(1, 3), 16), parseInt(selectedColor.value.slice(3, 5), 16), parseInt(selectedColor.value.slice(5, 7), 16)] as RGB;
+  const lch = rgbToLch(rgb);
+  const [l, c, h] = lch;
+
+  // 新的终止颜色选择逻辑
+  colors[1] = selectEndColor(l, c, h);
+
+  console.log(`Selected end color: ${colors[1]}`); // 调试信息
+  testcolor.forEach((color,index) => {
+    
+    const rgb = [parseInt(color[0].slice(1, 3), 16), parseInt(color[0].slice(3, 5), 16), parseInt(color[0].slice(5, 7), 16)] as RGB;
     const lch = rgbToLch(rgb);
-    const [L, C, H] = lch
-    console.log(`L: ${L}, C: ${C}, H: ${H}`); // 调试信息
-    if (L > L_THRESHOLD || C > C_THRESHOLD) {
-        let inRange = false;
-        for (const [start, end] of H_RANGES) {
-            if (H >= start && H <= end) {
-                colors[1] = '#2F4858'
-                inRange = true;
-                break;
-            }
-        }
-        if (!inRange) {
-            colors[1] = '#F9F871'
-        }        
-    } else {
-        if (C > C_SPECIAL_THRESHOLD && L < L_SPECIAL_THRESHOLD) {
-            colors[1] = '#F9F871'
-        } else {
-            colors[1] = '#2F4858'
-        }
-    }    
-    colors[1] = '#F9F871'
-    console.log(`Selected end color: ${colors[1]}`); // 调试信息
-    const generatedColors = interpolateColors(colors,6);
-    return generatedColors;
+    const [l, c, h] = lch;
+    //console.log(color[0] + ', ' + color[1] + ': ' + lch);
+    const endcolor = selectEndColor(l, c, h);
+    if (endcolor.toLowerCase() !== color[1]) {
+      console.log('start color: ' + color[0] + ' should match ' + color[1]);
+    }
+  }) 
+  return interpolateColors(colors, 6);
 }
+const testcolor=[
+  ['#845EC2','#f9f871'],
+  ['#FF9671','#2f4858'], 
+  ['#FFC75F','#2f4858'],
+  ['#F9F871','#2f4858'],
+  ['#2F4858','#f9f871'],
+  ['#00C9A7','#2f4858'],
+  ['#C34A36','#2f4858'],
+  ['#B0A8B9','#f9f871'],
+  ['#4B4453','#f9f871'],
+  ['#FF8066','#2f4858'],
+  ['#D65DB1','#f9f871'],
+  ['#6F8FAF','#f9f871'],
+  ['#8B4513','#2f4858'],
+  ['#FFD700','#2f4858'],
+  ['#98FF98','#2f4858'],
+  ['#FFFFFF','#f9f871'],
+  ['#FFFAFA','#2f4858'],
+  ['#000000','#f9f871'],
+  ['#0A0A0A','#f9f871'],
+  ['#FF00FF','#f9f871'],
+  ['#00FFFF','#f9f871'],
+  ['#7FFF00','#2f4858'],
+  ['#808080','#f9f871'],
+  ['#A9A9A9','#f9f871'],
+  ['#D3D3D3','#f9f871'],
+  ['#E6E6FA','#f9f871'],
+  ['#F0FFF0','#2f4858'],
+  ['#FFF0F5','#f9f871'],
+  ['#CC3300','#2f4858'],
+  ['#FF6600','#2f4858'],
+  ['#99CC00','#2f4858'],
+  ['#8B4513','#2f4858'],
+  ['#D2691E','#2f4858'],
+  ['#CD853F','#2f4858'],
+  ['#FFD700','#2f4858'],
+  ['#C0C0C0','#f9f871'],
+  ['#B87333','#2f4858'],
+  ['#FF1493','#f9f871'],
+  ['#00FF00','#2f4858'],
+  ['#FF00FF','#f9f871'],
+  ['#4B0082','#f9f871'],
+  ['#9932CC','#f9f871'], 
+  ['#20B2AA','#f9f871'],
+  ['#2F4858','#f9f871'],
+  ['#F9F871','#2f4858'],
+  ['#2F4868','#f9f871'],
+  ['#2E4858','#f9f871'],
+  ['#F9F881','#2f4858'],
+  ['#F8F871','#2f4858'],
+  ['#8A2BE2','#f9f871'],
+  ['#9932CC','#f9f871'],
+  ['#C71585','#f9f871'],
+  ['#FF69B4','#f9f871'],
+  ['#FFB6C1','#2f4858'],
+  ['#FFC0CB','#2f4858'],
+  ['#1E90FF','#f9f871'],
+  ['#4169E1','#f9f871'],
+  ['#87CEEB','#f9f871'],
+  ['#32CD32','#2f4858'],
+  ['#90EE90','#2f4858'],
+  ['#006400','#2f4858'],
+  ['#FFD700','#2f4858'],
+  ['#FFFF00','#2f4858'],
+  ['#F0E68C','#2f4858'],
+  ['#FF4500','#2f4858'],
+  ['#FF6347','#2f4858'],
+  ['#DC143C','#2f4858'],
+  ['#00FFFF','#f9f871'],
+  ['#E0FFFF','#f9f871'],
+  ['#20B2AA','#f9f871'],
+  ['#808080','#f9f871'],
+  ['#A9A9A9','#f9f871'],
+  ['#D3D3D3','#f9f871'],
+  ['#FFFFFF','#f9f871'],
+  ['#000000','#f9f871'],
+  ['#F0F8FF','#f9f871']
+]
+function selectEndColor(lightness: number, chroma: number, hue: number): string {
+  // 特殊颜色处理
+  if (lightness > 97 || lightness < 3) return '#F9F871'; // 接近纯白或纯黑
+  if (lightness > 95 && chroma < 10) return '#2F4858'; // 非常浅且低饱和度的颜色
+
+  // 灰色系处理
+  if (chroma < 10) {
+    return '#F9F871'; // 所有灰色系都匹配 '#F9F871'
+  }
+
+  // 紫色系处理（包括深紫色）
+  if (hue >= 270 && hue <= 320) {
+    return '#F9F871'; // 所有紫色系都匹配 '#F9F871'
+  }
+
+  // 粉红色系处理
+  if ((hue > 320 && hue <= 335) || hue <= 10) {
+    return '#F9F871';
+  }
+
+  // 蓝色系处理
+  if (hue > 180 && hue < 270) {
+    return lightness < 60 ? '#F9F871' : '#2F4858';
+  }
+
+  // 绿色系处理
+  if (hue >= 90 && hue <= 180) {
+    return lightness > 90 ? '#2F4858' : '#F9F871';
+  }
+
+  // 黄色系处理
+  if (hue > 50 && hue < 90) {
+    return '#2F4858';
+  }
+
+  // 橙色和红色系处理
+  if (hue >= 10 && hue <= 50) {
+    return '#2F4858';
+  }
+
+  // 青色系处理
+  if (hue > 170 && hue <= 190) {
+    return '#F9F871';
+  }
+
+  // 特殊颜色调整
+  if (hue >= 90 && hue <= 180 && lightness > 80) {
+    return '#2F4858';
+  }
+
+  // 默认规则
+  return lightness > 80 ? '#2F4858' : '#F9F871';
+}
+
+//end
 
 const generatePalettes = () => {
   const genericGradientColors = genericGradient();

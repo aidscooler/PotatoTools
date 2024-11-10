@@ -125,7 +125,7 @@ onMounted(async () => {
   
   <style scoped>
   .rsa-generator {
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .card-header {
