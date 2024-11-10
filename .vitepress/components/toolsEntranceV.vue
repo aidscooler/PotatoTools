@@ -14,6 +14,9 @@ const props = defineProps({
 
 const loadingInstance = ref(null)
 const currentTool = ref(null)
+const toolName = ref('')
+
+toolName.value = props.toolName;
 
 const showLoading = () => {
     loadingInstance.value = ElLoading.service({
@@ -62,7 +65,8 @@ onMounted(async () => {
         hideLoading();
     }
 })
-//目前 Gradient子组件需要与 父组件通信，渲染父组件背景颜色
+const shouldRenderTool = computed(() => !!currentTool.value);
+const isGradientTool = computed(() => toolName.value === 'Gradient');
 const iframecontainer = ref(null);
 
 const updateBackground = (cssCode) => {
@@ -70,8 +74,9 @@ const updateBackground = (cssCode) => {
     iframecontainer.value.style = cssCode;
   }
 };
+
 const showLeftads = ref(props.showLeftads);
-const showRightads = ref(props.showRightads)
+const showRightads = ref(props.showRightads);
 </script>
 <template>
     <div class="iframecontainer" ref="iframecontainer">
@@ -80,8 +85,11 @@ const showRightads = ref(props.showRightads)
             </iframe>
         </div>
 
-        <div class="framecenter" style="background-color: transparent;">
-            <component :is="currentTool" @update-background="updateBackground" v-if="currentTool" />
+        <div class="framecenter" style="background-color: transparent;"><!--目前 Gradient子组件需要与 父组件通信，渲染父组件背景颜色-->
+            <div v-if="shouldRenderTool">
+                <component :is="currentTool" @update-background="updateBackground" v-if="isGradientTool" />
+                <component :is="currentTool" v-else />
+            </div>
         </div>
         
         <div v-if="!isMobile && showRightads" class="frameright">

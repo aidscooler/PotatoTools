@@ -163,7 +163,7 @@ let codeExamples = [];
         }
         //console.log(response)
         let data = await response.json();
-        console.log(data);
+        //console.log(data);
         data.forEach(element => {
             element.code = element.code.replace(/\\n/g, '\n')  // 将 \\n 转换为 \n
                                        .replace(/\\\\/g, '\\'); // 将 \\\\ 转换为 \\
