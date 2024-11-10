@@ -64,5 +64,11 @@
         "title": "时间戳转换工具",
         "details": "",
         "link": "/toolsEntrance/dev/TimeConverter.vue"
+    },
+    {
+        "icon": { "src": "/icons/devtools/TimeConverter.png" },
+        "title": "JSON与Yaml转换",
+        "details": "",
+        "link": "/toolsEntrance/dev/JSON-YamlConverter.vue"
     }
 ]
