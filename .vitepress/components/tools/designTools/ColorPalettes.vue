@@ -127,13 +127,15 @@ function genericGradient(): string[] {
   colors[0] = selectedColor.value;
   colors[1] = selectEndColor(selectedColor.value);
 
-  console.log(`Selected end color: ${colors[1]}`); // 调试信息
+  //console.log(`Selected end color: ${colors[1]}`); // 调试信息
   testcolor.forEach((color,index) => {
     const endcolor = selectEndColor(color[0]);
     if (endcolor.toLowerCase() !== color[1]) {
       console.log('start color: ' + color[0] + ' should match ' + color[1]);
     }
   }) 
+  //Matching gradient test
+  testComplementColors(testData);
   return interpolateColors(colors, 6);
 }
 const testcolor=[
@@ -248,17 +250,141 @@ const generatePalettes = () => {
   const genericGradientColors = genericGradient();
   palettes.value = {
     'Generic Gradient': genericGradientColors,
-    'Matching Gradient': ['#FF00FF', '#FFFF00', '#00FFFF', '#FF8000', '#0080FF'],
-    'Monochromatic': ['#880000', '#AA0000', '#CC0000', '#EE0000', '#FF0000'],
-    'Analogous': ['#FF0000', '#FF8000', '#FFFF00', '#80FF00', '#00FF00'],
-    'Complementary': ['#FF0000', '#00FFFF', '#FF8080', '#80FFFF', '#FF4040'],
-    'Triadic': ['#FF0000', '#00FF00', '#0000FF', '#FFAAAA', '#AAFFAA'],
-    'Tetradic': ['#FF0000', '#FFFF00', '#00FFFF', '#FF00FF', '#FF8080'],
-    'Split Complementary': ['#FF0000', '#00FF80', '#0080FF', '#FF8080', '#80FFC0'],
-    'Shades': ['#000000', '#404040', '#808080', '#C0C0C0', '#FFFFFF'],
+    // 'Matching Gradient': ['#FF00FF', '#FFFF00', '#00FFFF', '#FF8000', '#0080FF'],
+    // 'Monochromatic': ['#880000', '#AA0000', '#CC0000', '#EE0000', '#FF0000'],
+    // 'Analogous': ['#FF0000', '#FF8000', '#FFFF00', '#80FF00', '#00FF00'],
+    // 'Complementary': ['#FF0000', '#00FFFF', '#FF8080', '#80FFFF', '#FF4040'],
+    // 'Triadic': ['#FF0000', '#00FF00', '#0000FF', '#FFAAAA', '#AAFFAA'],
+    // 'Tetradic': ['#FF0000', '#FFFF00', '#00FFFF', '#FF00FF', '#FF8080'],
+    // 'Split Complementary': ['#FF0000', '#00FF80', '#0080FF', '#FF8080', '#80FFC0'],
+    // 'Shades': ['#000000', '#404040', '#808080', '#C0C0C0', '#FFFFFF'],
   }
   showPalettes.value = true
 }
+//互补色测试
+function getComplementColor(color) {
+    // 获取颜色的LCH值
+    let lch = chroma(color).lch();
+    
+    // 计算互补色的色相
+    let complementHue = (lch[2] + 180) % 360;
+    
+    // 调整亮度和色度
+    let complementL = lch[0] * 0.7; // 降低亮度
+    let complementC = lch[1] * 0.8; // 降低色度
+    
+    // 生成互补色并转换为十六进制格式
+    return chroma.lch(complementL, complementC, complementHue).hex();
+}
+
+function testComplementColors(testData) {
+    let allTestsPassed = true;
+    
+    testData.forEach(([startColor, expectedComplement]) => {
+        let computedComplement = getComplementColor(startColor);
+        
+        // if (computedComplement !== expectedComplement) {
+        //     console.log(`测试失败：起始颜色 ${startColor}，预期互补色 ${expectedComplement} : ${chroma(expectedComplement).lch()}，实际互补色 ${computedComplement} : ${chroma(computedComplement).lch()}`);
+        //     allTestsPassed = false;
+        // }
+        const lch = chroma(startColor).lch();
+        const elch = chroma(expectedComplement).lch();
+
+        // 计算对比色的色调角
+        // 这里我们选择相隔 120°
+        const contrastHue = (lch[2] + 120) % 360;
+        // 生成对比色
+        //const contrastColor = chroma.lch(lch[0], lch[1], contrastHue);
+        let hdiff = lch[2] - elch[2]
+        if (hdiff < 0) {
+          hdiff += 360;
+        }
+        console.log(`起始颜色 ${startColor} , 终止颜色 ${expectedComplement}, distance: ${chroma.contrast(startColor,expectedComplement)} l差异: ${lch[0] - elch[0]} , c差异: ${lch[1] - elch[1]} , h差异: ${hdiff}`);
+    });
+    
+    if (allTestsPassed) {
+        console.log('所有测试通过！');
+    }
+}
+
+const testData = [
+    ['#845ec2', '#008f7a'],
+    ['#ff9671', '#1b6299'],
+    ['#ffc75f', '#006f61'],
+    ['#f9f871', '#007160'],
+    ['#2f4858', '#da9bb7'],
+    ['#00c9a7', '#68558d'],
+    ['#c34a36', '#008ea8'],
+    ['#b0a8b9', '#23695d'],
+    ['#4b4453', '#72b8aa'],
+    ['#ff8066', '#006e8a'],
+    ['#d65db1', '#007660'],
+    ['#6f8faf', '#934b71'],
+    ['#8b4513', '#00b297'],
+    ['#ffd700', '#00765d'],
+    ['#98ff98', '#0063af'],
+    ['#ffffff', '#43655a'],
+    ['#fffafa', '#386664'],
+    ['#000000', '#a3cfcd'],
+    ['#0a0a0a', '#a9cec2'],
+    ['#ff00ff', '#007b83'],
+    ['#00ffff', '#924660'],
+    ['#7fff00', '#007ada'],
+    ['#808080', '#53756a'],
+    ['#a9a9a9', '#43655a'],
+    ['#d3d3d3', '#43655a'],
+    ['#e6e6fa', '#7e506c'],
+    ['#f0fff0', '#4c5e85'],
+    ['#fff0f5', '#2b6863'],
+    ['#cc3300', '#008bf6'],
+    ['#ff6600', '#00765d'],
+    ['#99cc00', '#007683'],
+    ['#8b4513', '#00b297'],
+    ['#d2691e', '#007c68'],
+    ['#cd853f', '#006d5f'],
+    ['#ffd700', '#00765d'],
+    ['#c0c0c0', '#43655a'],
+    ['#b87333', '#007a6c'],
+    ['#ff1493', '#00817d'],
+    ['#00ff00', '#0076ff'],
+    ['#ff00ff', '#007b83'],
+    ['#4b0082', '#00e1ca'],
+    ['#9932cc', '#00a493'],
+    ['#20b2aa', '#a33271'],
+    ['#2f4858', '#da9bb7'],
+    ['#f9f871', '#007160'],
+    ['#2f4868', '#e293bd'],
+    ['#2e4858', '#db9bb7'],
+    ['#f9f881', '#006f60'],
+    ['#f8f871', '#007160'],
+    ['#8a2be2', '#00ab90'],
+    ['#9932cc', '#00a493'],
+    ['#c71585', '#009c8a'],
+    ['#ff69b4', '#007166'],
+    ['#ffb6c1', '#006f61'],
+    ['#ffc0cb', '#006e5d'],
+    ['#1e90ff', '#9d3b77'],
+    ['#4169e1', '#c3549c'],
+    ['#87ceeb', '#974068'],
+    ['#32cd32', '#006ddb'],
+    ['#90ee90', '#0062a7'],
+    ['#006400', '#00a5e8'],
+    ['#ffd700', '#00765d'],
+    ['#ffff00', '#007861'],
+    ['#f0e68c', '#007460'],
+    ['#ff4500', '#006fee'],
+    ['#ff6347', '#00729e'],
+    ['#dc143c', '#0093d5'],
+    ['#00ffff', '#924660'],
+    ['#e0ffff', '#854e60'],
+    ['#20b2aa', '#a33271'],
+    ['#808080', '#53756a'],
+    ['#a9a9a9', '#43655a'],
+    ['#d3d3d3', '#43655a'],
+    ['#ffffff', '#43655a'],
+    ['#000000', '#a3cfcd'],
+    ['#f0f8ff', '#7a5365']
+];
 
 onMounted(() => {
   loadPickr().catch(error => {
@@ -266,6 +392,8 @@ onMounted(() => {
   });
 });
 
+const ll = chroma.scale(['#845ec2','#008f7a']).mode('lch').gamma(1).colors(6);//interpolateColors(['#845ec2','#008f7a'], 6);
+console.log(ll);
 </script>
   
 <style scoped>
