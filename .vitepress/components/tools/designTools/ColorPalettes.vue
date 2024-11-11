@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import {rgbToLch,interpolateColors,RGB,LCH} from '../../../utils.mjs';
+import chroma from 'chroma-js';
 let Pickr;
 const pikrContainer = ref<HTMLElement>();
 const pickrInstance = ref(null);
@@ -118,33 +119,17 @@ const openPickr = () => {
 };
 //generic gradient 主题
 function genericGradient(): string[] {
+  const lch = chroma(selectedColor.value).lch();
+  const complementHue = (lch[2] + 180) % 360;
+  const complementColor = chroma.lch(lch[0], lch[1], complementHue).hex();
+  console.log('complementColor: ' + complementColor);
   let colors = [];
   colors[0] = selectedColor.value;
-
-  // 特殊情况处理保持不变
-  if (selectedColor.value.toUpperCase() === '#F9F871') {
-    colors[1] = '#2F4858';
-    return interpolateColors(colors, 6);
-  } else if (selectedColor.value.toUpperCase() === '#2F4858') {
-    colors[1] = '#F9F871';
-    return interpolateColors(colors, 6);
-  }
-
-  const rgb = [parseInt(selectedColor.value.slice(1, 3), 16), parseInt(selectedColor.value.slice(3, 5), 16), parseInt(selectedColor.value.slice(5, 7), 16)] as RGB;
-  const lch = rgbToLch(rgb);
-  const [l, c, h] = lch;
-
-  // 新的终止颜色选择逻辑
-  colors[1] = selectEndColor(l, c, h);
+  colors[1] = selectEndColor(selectedColor.value);
 
   console.log(`Selected end color: ${colors[1]}`); // 调试信息
   testcolor.forEach((color,index) => {
-    
-    const rgb = [parseInt(color[0].slice(1, 3), 16), parseInt(color[0].slice(3, 5), 16), parseInt(color[0].slice(5, 7), 16)] as RGB;
-    const lch = rgbToLch(rgb);
-    const [l, c, h] = lch;
-    //console.log(color[0] + ', ' + color[1] + ': ' + lch);
-    const endcolor = selectEndColor(l, c, h);
+    const endcolor = selectEndColor(color[0]);
     if (endcolor.toLowerCase() !== color[1]) {
       console.log('start color: ' + color[0] + ' should match ' + color[1]);
     }
@@ -229,58 +214,32 @@ const testcolor=[
   ['#000000','#f9f871'],
   ['#F0F8FF','#f9f871']
 ]
-function selectEndColor(lightness: number, chroma: number, hue: number): string {
-  // 特殊颜色处理
-  if (lightness > 97 || lightness < 3) return '#F9F871'; // 接近纯白或纯黑
-  if (lightness > 95 && chroma < 10) return '#2F4858'; // 非常浅且低饱和度的颜色
-
-  // 灰色系处理
-  if (chroma < 10) {
-    return '#F9F871'; // 所有灰色系都匹配 '#F9F871'
+function selectEndColor(color: string): string {
+  //预设两种终止颜色，'#2F4858' '#F9F871' 。选择色差较大的进行渐变
+  //黑白灰，选择 '#F9F871'
+  //console.log(color);
+  const lch = chroma(color).lch();
+  // const deltaE1 = chroma.deltaE(color,'#2F4858');
+  // const deltaE2 = chroma.deltaE(color,'#F9F871');
+  // const contrast1 = chroma.contrast(color,'#2F4858');
+  // const contrast2 = chroma.contrast(color,'#F9F871');  
+  const distance1 = chroma.distance(color,'#2F4858','lch');
+  const distance2 = chroma.distance(color,'#F9F871','lch');   
+  // console.log('deltaE1: ' + deltaE1 + ' | deltaE2: ' + deltaE2)
+  // console.log('contrast1: ' + contrast1 + ' | contrast2: ' + contrast2)
+  //console.log('distance1: ' + distance1 + ' | distance2: ' + distance2)
+  //const chromaThreshold = 10; //定义灰色系颜色阙值
+  // console.log(color + ' : ' + lch)
+  if (Number.isNaN(lch[2])) {//黑白灰是没有色相(h)的
+    //console.log(color + ' : ' + lch)
+    return '#F9F871'
+  } else {
+    if (distance1 > distance2) {
+      return '#2F4858'
+    }else{
+      return '#F9F871'
+    }
   }
-
-  // 紫色系处理（包括深紫色）
-  if (hue >= 270 && hue <= 320) {
-    return '#F9F871'; // 所有紫色系都匹配 '#F9F871'
-  }
-
-  // 粉红色系处理
-  if ((hue > 320 && hue <= 335) || hue <= 10) {
-    return '#F9F871';
-  }
-
-  // 蓝色系处理
-  if (hue > 180 && hue < 270) {
-    return lightness < 60 ? '#F9F871' : '#2F4858';
-  }
-
-  // 绿色系处理
-  if (hue >= 90 && hue <= 180) {
-    return lightness > 90 ? '#2F4858' : '#F9F871';
-  }
-
-  // 黄色系处理
-  if (hue > 50 && hue < 90) {
-    return '#2F4858';
-  }
-
-  // 橙色和红色系处理
-  if (hue >= 10 && hue <= 50) {
-    return '#2F4858';
-  }
-
-  // 青色系处理
-  if (hue > 170 && hue <= 190) {
-    return '#F9F871';
-  }
-
-  // 特殊颜色调整
-  if (hue >= 90 && hue <= 180 && lightness > 80) {
-    return '#2F4858';
-  }
-
-  // 默认规则
-  return lightness > 80 ? '#2F4858' : '#F9F871';
 }
 
 //end

@@ -53,7 +53,6 @@
   import yamlHljs from 'highlight.js/lib/languages/yaml';
   import 'highlight.js/styles/atom-one-light.css'; /* 你可以选择其他样式，如 'github.css' */
   import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { ElMessage } from 'element-plus';
   
   const activeTab = ref('json-to-yaml');
   const jsonInput = ref('');
