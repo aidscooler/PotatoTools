@@ -220,7 +220,7 @@
       RawImage = modules.RawImage;
       // Since we will download the model from the Hugging Face Hub, we can skip the local model check
       env.allowLocalModels = false;
-      env.remoteHost = "https://briaai.potatoh5games.fun/";
+      env.remoteHost = "https://briaai.potatotools.top/";
       env.remotePathTemplate = "{model}";   
       env.backends.onnx.wasm.wasmPaths = "/wasm/";
       // Proxy the WASM backend to prevent the UI from freezing
