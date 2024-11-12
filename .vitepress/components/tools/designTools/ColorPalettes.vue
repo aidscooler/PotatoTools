@@ -243,13 +243,26 @@ function selectEndColor(color: string): string {
     }
   }
 }
-
 //end
+//shades 主题
+function shades() : string[] {
+  let colors;
+  const lch = chroma(selectedColor.value).lch();
+  if (lch[0] > 50) {
+    colors = chroma.scale([selectedColor.value, 'black']).mode('lch').colors(6);
+  }else {
+    colors = chroma.scale([selectedColor.value, 'white']).mode('lch').colors(6);
+  }
+  colors.pop();
+  return colors;
+}
 
 const generatePalettes = () => {
   const genericGradientColors = genericGradient();
+  const shadesColors = shades();
   palettes.value = {
-    'Generic Gradient': genericGradientColors,
+    '通用渐变': genericGradientColors,
+    '深浅变化' : shadesColors,
     // 'Matching Gradient': ['#FF00FF', '#FFFF00', '#00FFFF', '#FF8000', '#0080FF'],
     // 'Monochromatic': ['#880000', '#AA0000', '#CC0000', '#EE0000', '#FF0000'],
     // 'Analogous': ['#FF0000', '#FF8000', '#FFFF00', '#80FF00', '#00FF00'],
@@ -392,15 +405,14 @@ onMounted(() => {
   });
 });
 
-const ll = chroma.scale(['#845ec2','#008f7a']).mode('lch').gamma(1).colors(6);//interpolateColors(['#845ec2','#008f7a'], 6);
-console.log(ll);
+// const ll = chroma.scale(['#845ec2','#008f7a']).mode('lch').gamma(1).colors(6);//interpolateColors(['#845ec2','#008f7a'], 6);
+// console.log(ll);
 </script>
   
 <style scoped>
 .color-tool {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .card-header {

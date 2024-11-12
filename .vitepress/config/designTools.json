@@ -12,13 +12,13 @@
         "link": "/toolsEntrance/design/AnimationGenerator.vue"
     },
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/designtools/ColorPalettes.png" },
         "title": "自动配色工具",
         "details": "",
         "link": "/toolsEntrance/design/ColorPalettes.vue"
     } ,
     {
-        "icon": { "src": "" },
+        "icon": { "src": "/icons/designtools/Gradient.png" },
         "title": "颜色渐变设计",
         "details": "",
         "link": "/toolsEntrance/design/Gradient.vue"
