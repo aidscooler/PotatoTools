@@ -8,19 +8,19 @@
     {
         "icon": { "src": "/icons/designtools/AnimationGenerator.png" },
         "title": "CSS3动画设计",
-        "details": "",
+        "details": "基于Animate.css的样式动画设计",
         "link": "/toolsEntrance/design/AnimationGenerator.vue"
     },
     {
         "icon": { "src": "/icons/designtools/ColorPalettes.png" },
         "title": "自动配色工具",
-        "details": "",
+        "details": "配色缺乏灵感？来这里试试吧！",
         "link": "/toolsEntrance/design/ColorPalettes.vue"
     } ,
     {
         "icon": { "src": "/icons/designtools/Gradient.png" },
         "title": "颜色渐变设计",
-        "details": "",
+        "details": "智能色彩渐变",
         "link": "/toolsEntrance/design/Gradient.vue"
     }    
 ]

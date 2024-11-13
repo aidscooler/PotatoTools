@@ -2,7 +2,7 @@
     {
       "icon": { "src": "/icons/videotools/VideoConverter.png" },
       "title": "视频格式转换",
-      "details": "",
+      "details": "基于ffmpeg.wasm实现的视频格式转换工具",
       "link": "/toolsEntrance/video/VideoConverter.vue"
     }
 ]

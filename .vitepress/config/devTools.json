@@ -2,73 +2,73 @@
     {
       "icon": { "src": "/icons/devtools/JavaScriptTool.png" },
       "title": "JS工具",
-      "details": "",
+      "details": "美化、压缩、混淆JS代码",
       "link": "/toolsEntrance/dev/JavaScriptTool.vue"
     },
     {
         "icon": { "src": "/icons/devtools/CSSTool.png" },
         "title": "CSS工具",
-        "details": "",
+        "details": "美化、压缩CSS代码",
         "link": "/toolsEntrance/dev/CSSTool.vue"
     },
     {
         "icon": { "src": "/icons/devtools/HtmlTool.png" },
         "title": "Html工具",
-        "details": "",
+        "details": "美化、压缩HTML代码",
         "link": "/toolsEntrance/dev/HtmlTool.vue"
     },
     {
         "icon": { "src": "/icons/devtools/JSONTool.png" },
         "title": "JSON工具",
-        "details": "",
+        "details": "美化、压缩、校验JSON数据",
         "link": "/toolsEntrance/dev/JSONTool.vue"
     },
     {
         "icon": { "src": "/icons/devtools/SQLFormatter.png" },
         "title": "SQL工具",
-        "details": "",
+        "details": "支持多种SQL方言的美化",
         "link": "/toolsEntrance/dev/SQLFormatter.vue"
     },
     {
         "icon": { "src": "/icons/devtools/TokenGen.png" },
         "title": "Token生成器",
-        "details": "",
+        "details": "生成随机Token",
         "link": "/toolsEntrance/dev/TokenGen.vue"
     },
     {
         "icon": { "src": "/icons/devtools/UUidGenerator.png" },
         "title": "UUid生成器",
-        "details": "",
+        "details": "生成各种版本的UUid",
         "link": "/toolsEntrance/dev/UUidGenerator.vue"
     },
     {
         "icon": { "src": "/icons/devtools/WebSocketTest.png" },
         "title": "WebSocket测试工具",
-        "details": "",
+        "details": "在线WebSocket测试",
         "link": "/toolsEntrance/dev/WebSocketTest.vue"
     },
     {
         "icon": { "src": "/icons/devtools/RSAKeyGen.png" },
         "title": "RSA密钥生成器",
-        "details": "",
+        "details": "生成随机的RSA密钥对",
         "link": "/toolsEntrance/dev/RSAKeyGen.vue"
     },
     {
         "icon": { "src": "/icons/devtools/HashEncrypt.png" },
         "title": "Hash加密",
-        "details": "",
+        "details": "提供MD5等各种Hash加密功能",
         "link": "/toolsEntrance/dev/HashEncrypt.vue"
     },
     {
         "icon": { "src": "/icons/devtools/TimeConverter.png" },
         "title": "时间戳转换工具",
-        "details": "",
+        "details": "获取当前时间戳，实现时间戳和日期格式相互转换",
         "link": "/toolsEntrance/dev/TimeConverter.vue"
     },
     {
         "icon": { "src": "/icons/devtools/JSON-YamlConverter.png" },
         "title": "JSON与Yaml转换",
-        "details": "",
+        "details": "JSON和Yaml相互转换",
         "link": "/toolsEntrance/dev/JSON-YamlConverter.vue"
     }
 ]

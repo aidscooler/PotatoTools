@@ -71,6 +71,7 @@
 </template>
   
 <script setup lang="ts">
+  import codeExample from '../../../config/codeExample.json';
   const currentTimestamp = ref('');
   const timestampType = ref('unixTimestamp');
   const timestampUnit = ref('秒');
@@ -152,26 +153,14 @@
   
 // 编程语言代码示例
 let codeExamples = [];
-
   onMounted( async () => {
     updateTimestamp();
     intervalId.value = setInterval(updateTimestamp, 1000);
-    try {
-        const response = await fetch('codeExample.json');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data.json');
-        }
-        //console.log(response)
-        let data = await response.json();
-        //console.log(data);
-        data.forEach(element => {
-            element.code = element.code.replace(/\\n/g, '\n')  // 将 \\n 转换为 \n
-                                       .replace(/\\\\/g, '\\'); // 将 \\\\ 转换为 \\
-        });
-        codeExamples = data;
-      } catch (error) {
-        console.error('Error reading the JSON file:', error);
-    }    
+    codeExample.forEach(element => {
+        element.code = element.code.replace(/\\n/g, '\n')  // 将 \\n 转换为 \n
+                                    .replace(/\\\\/g, '\\'); // 将 \\\\ 转换为 \\
+    });
+    codeExamples = codeExample;
   });
   
   watch(timestampType, () => {
