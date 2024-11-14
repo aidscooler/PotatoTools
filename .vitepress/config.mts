@@ -14,12 +14,13 @@ export default defineConfig({
   title: "Potato Tools",
   description: "Explore the infinite possibilities of the front-end world.",
   head: [ ['link', { rel: 'icon', href: '/potato.ico' }],
-          ['script', { 
-                        async: 'async',
-                        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8732961563471855',
-                        crossorigin: 'anonymous',
-                    }
-          ]
+          //goole adsense code
+          // ['script', { 
+          //               async: 'async',
+          //               src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8732961563471855',
+          //               crossorigin: 'anonymous',
+          //           }
+          // ]
         ],
   ignoreDeadLinks: true,
   metaChunk: true,
