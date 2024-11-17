@@ -1,9 +1,10 @@
 <script setup>
 /**
- * 工具组件入口，中间60%为游戏区域，两边各10%为广告区域
+ * 工具组件入口，中间区域为工具展示区域，两边为广告区域，可控制是否展示广告
  * 
  */
-
+import { useHead } from '@unhead/vue'
+import seoConfig from '../config/seoConfig.json'
 const props = defineProps({
     id: String,
     folder: String,
@@ -77,6 +78,30 @@ const updateBackground = (cssCode) => {
 
 const showLeftads = ref(props.showLeftads);
 const showRightads = ref(props.showRightads);
+
+//SEO配置
+const toolConfig = computed(() => seoConfig[props.toolName] || {})
+
+// 使用useHead进行页面级SEO优化
+useHead({
+  title: computed(() => toolConfig.value.title || '土豆工具箱'),
+  meta: [
+    {
+      name: 'description',
+      content: computed(() => toolConfig.value.description || '')
+    },
+    {
+      name: 'keywords',
+      content: computed(() => toolConfig.value.keywords || '')
+    }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: computed(() => JSON.stringify(toolConfig.value.jsonLd || {}))
+    }
+  ]
+})
 </script>
 <template>
     <div class="iframecontainer" ref="iframecontainer">

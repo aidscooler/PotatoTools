@@ -3,6 +3,7 @@ import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 //import ToolsLayout from '../components/ToolsLayout.vue'
+import { createHead } from '@unhead/vue'
 import ToolsEntranceV from '../components/toolsEntranceV.vue'
 //import GroupedFeatures from '../components/GroupedFeatures.vue'
 import './style.css'
@@ -21,5 +22,7 @@ export default {
     //app.component('ToolsLayout', ToolsLayout);
     app.component('ToolsEntranceV', ToolsEntranceV);
     //app.component('GroupedFeatures', GroupedFeatures);
+    const head = createHead();
+    app.use(head);
   }
 } satisfies Theme

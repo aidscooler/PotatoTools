@@ -1,0 +1,54 @@
+{
+    "UUidGenerator": {
+      "title": "UUID生成器 - 在线生成唯一标识符",
+      "description": "免费在线UUID生成器，快速创建随机的UUID。适用于开发者和数据库管理员。",
+      "keywords": "UUID,UUID生成器,唯一标识符生成,在线UUid工具,随机ID生成器,数据库主键,分布式系统标识,网络编程工具,软件测试ID,通用唯一识别码",
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "UUID生成器",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0"
+        },
+        "url": "https://www.potatotools.top/toolsEntrance/dev/UUidGenerator.vue.html"
+      }
+    },
+    "TimeConverter": {
+      "title": "时间戳转换工具 - 在线转换日期和时间戳",
+      "description": "在线时间戳转换工具，支持Unix时间戳与人类可读日期时间的双向转换。适合程序员和数据分析师使用。",
+      "keywords": "timestamp,时间戳转换器,Unix时间戳工具,日期时间转换,在线时间工具,ISO 8601格式化,UTC转换器,日志时间分析,跨时区计算",
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "时间戳转换工具",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0"
+        },
+        "url": "https://www.potatotools.top/toolsEntrance/dev/TimeConverter.vue.html"
+      }
+    },
+    "RSAKeyGen": {
+      "title": "RSA密钥对生成器 - 在线生成公钥和私钥",
+      "description": "安全的在线RSA密钥对生成器，快速创建用于加密和数字签名的公钥和私钥。适用于信息安全专业人士和开发者。",
+      "keywords": "RSA,RSA密钥对生成器,公钥私钥创建,在线加密工具,数字签名生成,安全密钥生成,SSL证书密钥,非对称加密,网络安全工具,身份验证密钥",
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "RSA密钥对生成器",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0"
+        },
+        "url": "https://www.potatotools.top/toolsEntrance/dev/RSAKeyGen.vue.html"
+      }
+    }
+  }
+  
