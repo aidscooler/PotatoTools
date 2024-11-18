@@ -14,6 +14,7 @@ export default defineConfig({
   title: "Potato Tools",
   description: "Explore the infinite possibilities of the front-end world.",
   head: [ ['link', { rel: 'icon', href: '/potato.ico' }],
+          ['meta', { name: 'baidu-site-verification', content: 'codeva-3oRQefjNi2'}], 
           //goole adsense code
           // ['script', { 
           //               async: 'async',
