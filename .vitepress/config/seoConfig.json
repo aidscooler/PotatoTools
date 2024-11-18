@@ -1,54 +1,428 @@
 {
-    "UUidGenerator": {
-      "title": "UUID生成器 - 在线生成唯一标识符",
-      "description": "免费在线UUID生成器，快速创建随机的UUID。适用于开发者和数据库管理员。",
-      "keywords": "UUID,UUID生成器,唯一标识符生成,在线UUid工具,随机ID生成器,数据库主键,分布式系统标识,网络编程工具,软件测试ID,通用唯一识别码",
-      "jsonLd": {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "UUID生成器",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Web",
-        "offers": {
-          "@type": "Offer",
-          "price": "0"
-        },
-        "url": "https://www.potatotools.top/toolsEntrance/dev/UUidGenerator.vue.html"
-      }
-    },
-    "TimeConverter": {
-      "title": "时间戳转换工具 - 在线转换日期和时间戳",
-      "description": "在线时间戳转换工具，支持Unix时间戳与人类可读日期时间的双向转换。适合程序员和数据分析师使用。",
-      "keywords": "timestamp,时间戳转换器,Unix时间戳工具,日期时间转换,在线时间工具,ISO 8601格式化,UTC转换器,日志时间分析,跨时区计算",
-      "jsonLd": {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "时间戳转换工具",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Web",
-        "offers": {
-          "@type": "Offer",
-          "price": "0"
-        },
-        "url": "https://www.potatotools.top/toolsEntrance/dev/TimeConverter.vue.html"
-      }
-    },
-    "RSAKeyGen": {
-      "title": "RSA密钥对生成器 - 在线生成公钥和私钥",
-      "description": "安全的在线RSA密钥对生成器，快速创建用于加密和数字签名的公钥和私钥。适用于信息安全专业人士和开发者。",
-      "keywords": "RSA,RSA密钥对生成器,公钥私钥创建,在线加密工具,数字签名生成,安全密钥生成,SSL证书密钥,非对称加密,网络安全工具,身份验证密钥",
-      "jsonLd": {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "RSA密钥对生成器",
-        "applicationCategory": "SecurityApplication",
-        "operatingSystem": "Web",
-        "offers": {
-          "@type": "Offer",
-          "price": "0"
-        },
-        "url": "https://www.potatotools.top/toolsEntrance/dev/RSAKeyGen.vue.html"
-      }
+  "JavaScriptTool": {
+    "title": "JS工具 - JS代码美化、压缩、混淆",
+    "description": "在线JavaScript代码处理工具，提供代码美化、压缩和混淆功能，帮助开发者优化和保护JavaScript代码。",
+    "keywords": "JS工具,JavaScript代码美化,JS代码压缩,JS代码混淆,在线JS处理,前端开发工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JS代码处理工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/JavaScriptTool.vue.html"
+    }
+  },
+  "CSSTool": {
+    "title": "CSS工具 - CSS代码美化、压缩",
+    "description": "在线CSS代码处理工具，支持CSS代码美化和压缩，帮助web开发者优化样式表。",
+    "keywords": "CSS工具,CSS代码美化,CSS压缩,在线CSS处理,前端开发工具,样式表优化",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CSS代码处理工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/CSSTool.vue.html"
+    }
+  },
+  "HtmlTool": {
+    "title": "HTML工具 - HTML代码美化、压缩",
+    "description": "在线HTML代码处理工具，提供HTML代码美化和压缩功能，帮助web开发者优化网页代码。",
+    "keywords": "HTML工具,HTML代码美化,HTML压缩,在线HTML处理,前端开发工具,网页代码优化",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "HTML代码处理工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/HtmlTool.vue.html"
+    }
+  },
+  "JSONTool": {
+    "title": "JSON工具 - JSON数据美化、压缩、校验",
+    "description": "专业的在线JSON数据处理工具，支持JSON数据美化、压缩和语法校验，帮助开发者快速处理JSON数据。",
+    "keywords": "JSON工具,JSON美化,JSON压缩,JSON校验,在线JSON处理,数据格式化",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JSON数据处理工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/JSONTool.vue.html"
+    }
+  },
+  "SQLFormatter": {
+    "title": "SQL工具 - SQL代码美化，支持多种SQL方言",
+    "description": "功能强大的在线SQL代码美化工具，支持多种SQL方言，帮助数据库开发者和分析师格式化和优化SQL查询语句。",
+    "keywords": "SQL工具,SQL美化,SQL格式化,SQL方言,数据库查询优化,在线SQL处理",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SQL代码美化工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/SQLFormatter.vue.html"
+    }
+  },
+  "TokenGen": {
+    "title": "Token生成器 - 生成随机Token数据",
+    "description": "安全可靠的在线Token生成器，快速创建随机Token，适用于API认证、安全测试和开发场景。",
+    "keywords": "Token生成器,随机Token,API认证,安全测试,开发工具,在线Token生成",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Token生成工具",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/TokenGen.vue.html"
+    }
+  },
+  "UUidGenerator": {
+    "title": "UUID生成器 - 在线生成唯一标识符",
+    "description": "免费在线UUID生成器，快速创建随机的UUID。适用于开发者和数据库管理员。",
+    "keywords": "UUID,UUID生成器,唯一标识符生成,在线UUid工具,随机ID生成器,数据库主键,分布式系统标识,网络编程工具,软件测试ID,通用唯一识别码",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "UUID生成器",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://www.potatotools.top/toolsEntrance/dev/UUidGenerator.vue.html"
+    }
+  },
+  "WebSocketTest":{
+    "title": "WebSocket测试工具 - 在线测试WebSocket服务",
+    "description": "专业的在线WebSocket测试工具，支持WebSocket连接、消息发送和接收，帮助开发者调试和测试实时通信应用。",
+    "keywords": "WebSocket测试,WebSocket工具,在线WebSocket调试,实时通信测试,网络协议测试,开发者工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "WebSocket测试工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/WebSocketTest.vue.html"
+    }
+  },
+  "RSAKeyGen": {
+    "title": "RSA密钥对生成器 - 在线生成公钥和私钥",
+    "description": "安全的在线RSA密钥对生成器，快速创建用于加密和数字签名的公钥和私钥。适用于信息安全专业人士和开发者。",
+    "keywords": "RSA,RSA密钥对生成器,公钥私钥创建,在线加密工具,数字签名生成,安全密钥生成,SSL证书密钥,非对称加密,网络安全工具,身份验证密钥",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "RSA密钥对生成器",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://www.potatotools.top/toolsEntrance/dev/RSAKeyGen.vue.html"
+    }
+  },
+  "HashEncrypt": {
+    "title": "Hash加密 - 实现MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3, RIPEMD160算法进行加密",
+    "description": "多算法在线Hash加密工具，支持MD5、SHA家族等常用加密算法，帮助开发者快速生成数据摘要和校验值。",
+    "keywords": "Hash加密,MD5加密,SHA加密,数据摘要,在线加密工具,信息安全,密码学,数据校验",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Hash加密工具",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/HashEncrypt.vue.html"
+    }
+  },
+  "TimeConverter": {
+    "title": "时间戳转换工具 - 在线转换日期和时间戳",
+    "description": "在线时间戳转换工具，支持Unix时间戳与人类可读日期时间的双向转换。适合程序员和数据分析师使用。",
+    "keywords": "timestamp,时间戳转换器,Unix时间戳工具,日期时间转换,在线时间工具,ISO 8601格式化,UTC转换器,日志时间分析,跨时区计算",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "时间戳转换工具",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://www.potatotools.top/toolsEntrance/dev/TimeConverter.vue.html"
+    }
+  },
+  "JSON-YamlConverter": {
+    "title": "JSON与Yaml转换 - 实现JSON数据和Yaml数据相互转换",
+    "description": "专业的JSON和YAML格式互转工具，支持双向转换，帮助开发者快速处理配置文件格式转换需求。",
+    "keywords": "JSON转YAML,YAML转JSON,配置文件转换,数据格式转换,在线转换工具,开发工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "JSON与YAML转换工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/dev/JSON-YamlConverter.vue.html"
+    }
+  },
+  "ImageBase64": {
+    "title": "图片转Base64编码 - 实现图片与Base64编码的相互转换",
+    "description": "在线图片Base64编码转换工具，支持图片到Base64编码的双向转换，适用于前端开发和图片嵌入需求。",
+    "keywords": "图片Base64,Base64转换,图片编码,在线图片工具,前端开发工具,图片嵌入",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片Base64转换工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageBase64.vue.html"
+    }
+  },
+  "ImageSplitter": {
+    "title": "图片分割工具 - 按照行列数分割图片，轻松制作九宫格图片",
+    "description": "专业的图片分割工具，支持自定义行列数分割图片，轻松制作九宫格等社交媒体图片。",
+    "keywords": "图片分割,九宫格制作,图片裁剪,社交媒体工具,在线图片处理,图片编辑器",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片分割工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageSplitter.vue.html"
+    }
+  },
+  "IcoGenerator": {
+    "title": "ICO生成器 - 上传图片，自动生成ICO",
+    "description": "便捷的ICO图标生成工具，支持从各种图片格式快速生成网站favicon图标，适合网站开发使用。",
+    "keywords": "ICO生成器,favicon制作,图标转换,网站图标,在线ICO工具,图标生成器",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ICO图标生成器",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/IcoGenerator.vue.html"
+    }
+  },
+  "ImageCompressor": {
+    "title": "图片压缩工具 - 支持.jpg,.jpeg,.png,.webp,.gif格式的图片压缩",
+    "description": "高效的在线图片压缩工具，支持多种图片格式。",
+    "keywords": "图片压缩,在线压缩工具,图片优化,批量压缩,图片处理,网站图片优化",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片压缩工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageCompressor.vue.html"
+    }
+  },
+  "ImageConverter": {
+    "title": "图片格式转换工具 - 支持png,gif,webp,bmp,tiff,svg,psd,heic格式图片转换为jpg格式",
+    "description": "多功能图片格式转换工具，支持主流图片格式互相转换，满足各种图片格式需求。",
+    "keywords": "图片格式转换,图片转换器,格式互转,在线图片工具,批量转换,图片处理",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片格式转换工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageConverter.vue.html"
+    }
+  },
+  "ImageWatermark": {
+    "title": "图片加水印工具 - 支持自定义水印样式",
+    "description": "专业的图片水印添加工具，支持自定义文字、图片水印，提供丰富的样式选项。",
+    "keywords": "图片水印,水印制作,在线水印工具,图片处理,版权保护,图片编辑",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片水印工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageWatermark.vue.html"
+    }
+  },
+  "ImageCropper": {
+    "title": "图片裁剪工具 - 支持裁剪尺寸自定义，手动调整裁剪窗口",
+    "description": "灵活的在线图片裁剪工具，支持自定义尺寸和比例，适合制作头像和产品图片。",
+    "keywords": "图片裁剪,在线裁剪,图片编辑,头像制作,产品图处理,图片处理工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "图片裁剪工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageCropper.vue.html"
+    }
+  },
+  "ImageBackgroundRemover": {
+    "title": "图片去除背景工具 - 基于briaai/RMBG-1.4实现的AI抠图工具",
+    "description": "智能AI抠图工具，基于先进的机器学习技术，快速准确地移除图片背景。",
+    "keywords": "AI抠图,背景去除,智能抠图,图片处理,在线PS,图片编辑工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AI图片背景去除工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/pic/ImageBackgroundRemover.vue.html"
+    }
+  },
+  "ColorPickr": {
+    "title": "拾色器 - 包含吸管，自动取色",
+    "description": "专业的在线拾色器工具，支持屏幕取色和颜色值查看，适合设计师和开发者使用。",
+    "keywords": "拾色器,颜色选择器,屏幕取色,在线取色工具,设计工具,前端开发",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "在线拾色器",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/design/ColorPickr.vue.html"
+    }
+  },
+  "AnimationGenerator": {
+    "title": "CSS3动画设计工具 - 基于Animate.css的样式动画设计工具，包含官方所有测试案例",
+    "description": "强大的CSS3动画设计工具，基于Animate.css库，提供丰富的动画效果和自定义选项。",
+    "keywords": "CSS3动画,动画设计,Animate.css,网页动画,前端开发,动画效果",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CSS3动画设计工具",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/design/AnimationGenerator.vue.html"
+    }
+  },
+  "ColorPalettes": {
+    "title": "自动配色工具 - 根据你输入的颜色自动生成配色方案",
+    "description": "智能配色工具，根据输入颜色自动生成和谐的配色方案，帮助设计师快速找到完美配色。",
+    "keywords": "配色工具,色彩搭配,调色板生成器,设计配色,在线配色,色彩方案",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "自动配色工具",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/design/ColorPalettes.vue.html"
+    }
+  },
+  "Gradient": {
+    "title": "颜色渐变设计工具 - 支持自定义的颜色渐变设计工具",
+    "description": "专业的渐变色设计工具，支持多种渐变方式和自定义控制点，创建独特的渐变效果。",
+    "keywords": "渐变设计,CSS渐变,颜色渐变,设计工具,背景渐变,前端开发",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "渐变色设计工具",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/design/Gradient.vue.html"
+    }
+  },
+  "VideoConverter": {
+    "title": "视频格式转换工具 - 支持常见格式的视频互相转换",
+    "description": "多功能视频格式转换工具，支持主流视频格式互转，保持视频质量的同时实现格式转换。",
+    "keywords": "视频转换,格式转换器,视频处理,在线转换工具,视频编码,多媒体工具",
+    "jsonLd": {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "视频格式转换工具",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "url": "https://potatotools.top/toolsEntrance/video/VideoConverter.vue.html"
     }
   }
+}
   
