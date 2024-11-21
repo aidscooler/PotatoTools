@@ -1,209 +1,241 @@
 <template>
-    <div class="flex flex-col h-screen mx-auto justify-end text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-900">
-      <div class="h-full overflow-auto scrollbar-thin flex justify-center items-center flex-col relative">
-        <div class="flex flex-col items-center mb-1 max-w-[400px] text-center">
-          <img src="logo.png" width="50%" height="auto" class="block" />
-          <h1 class="text-4xl font-bold mb-1">Whisper WebGPU</h1>
-          <h2 class="text-xl font-semibold">
-            Real-time in-browser speech recognition
-          </h2>
-        </div>
-  
-        <div class="flex flex-col items-center px-4">
-          <div class="w-[500px] p-2">
-            <AudioVisualizer class="w-full rounded-lg" :stream="stream" />
-            <div v-if="status === 'ready'" class="relative">
-              <p class="w-full h-[80px] overflow-y-auto overflow-wrap-anywhere border rounded-lg p-2">
-                {{ text }}
-              </p>
-              <span v-if="tps" class="absolute bottom-0 right-0 px-1">
-                {{ tps.toFixed(2) }} tok/s
-              </span>
-            </div>
-          </div>
-          <LanguageSelector
-            v-if="status === 'ready'"
-            :language="language"
-            @update-language="handleLanguageChange"
-          />
-          <button
-            v-if="status === 'ready'"
-            class="border rounded-lg px-2 absolute right-2"
-            @click="reset"
+  <el-card class="whisper-transcription-card">
+    <template #header>
+      <div class="card-header">
+        <h2>语音转文字</h2>
+        <div class="model-selection">
+          <el-select 
+            v-model="selectedModel" 
+            placeholder="选择模型"
+            @change="loadModel"
           >
-            Reset
-          </button>
-          <div v-if="status === 'loading'" class="w-full max-w-[500px] text-left mx-auto p-4">
-            <p class="text-center">{{ loadingMessage }}</p>
-            <Progress
-              v-for="(item, index) in progressItems"
-              :key="index"
-              :text="item.file"
-              :percentage="item.progress"
-              :total="item.total"
+            <el-option 
+              v-for="(value, key) in WHISPER_MODELS" 
+              :key="key" 
+              :label="key" 
+              :value="key"
             />
-          </div>
-          <button
-            v-if="status === null"
-            class="border px-4 py-2 rounded-lg bg-blue-400 text-white hover:bg-blue-500 disabled:bg-blue-100 disabled:cursor-not-allowed select-none"
-            @click="loadModel"
-            :disabled="status !== null"
+          </el-select>
+          <el-select 
+            v-model="selectedLanguage" 
+            placeholder="选择语言"
           >
-            Load model
-          </button>
+            <el-option 
+              v-for="(lang, code) in SUPPORTED_LANGUAGES" 
+              :key="code" 
+              :label="lang" 
+              :value="code"
+            />
+          </el-select>
         </div>
       </div>
-    </div>
-  </template>
-  
-  <script setup>
-  import AudioVisualizer from './Whisper-components/AudioVisualizer.vue';
-  import Progress from './Whisper-components/Progress.vue';
-  import LanguageSelector from './Whisper-components/LanguageSelector.vue';
-  
-  const IS_WEBGPU_AVAILABLE = !!navigator.gpu;
-  
-  const WHISPER_SAMPLING_RATE = 16000;
-  const MAX_AUDIO_LENGTH = 30; // seconds
-  const MAX_SAMPLES = WHISPER_SAMPLING_RATE * MAX_AUDIO_LENGTH;
-  
-  const worker = ref(null);
-  const recorderRef = ref(null);
-  const status = ref(null);
-  const loadingMessage = ref("");
-  const progressItems = ref([]);
-  const text = ref("");
-  const tps = ref(null);
-  const language = ref("en");
-  const recording = ref(false);
-  const isProcessing = ref(false);
-  const chunks = ref([]);
-  const stream = ref(null);
-  const audioContextRef = ref(null);
-  
-  onMounted(() => {
-    worker.value = new Worker(new URL('../../../library/whisperWorker.ts', import.meta.url), {
-      type: 'module',
-    });
-  
-    worker.value.addEventListener('message', onMessageReceived);
-  
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(setupMediaRecorder).catch(console.error);
-  });
-  
-  const setupMediaRecorder = (stream) => {
-    stream.value = stream;
-  
-    recorderRef.value = new MediaRecorder(stream);
-    audioContextRef.value = new AudioContext({
-      sampleRate: WHISPER_SAMPLING_RATE,
-    });
-  
-    recorderRef.value.onstart = () => {
-      recording.value = true;
-      chunks.value = [];
-    };
-  
-    recorderRef.value.ondataavailable = (e) => {
-      if (e.data.size > 0) {
-        chunks.value.push(e.data);
-      } else {
-        setTimeout(() => {
-          recorderRef.value.requestData();
-        }, 25);
-      }
-    };
-  
-    recorderRef.value.onstop = () => {
-      recording.value = false;
-    };
-  };
-  
-const onMessageReceived = (e) => {
-  switch (e.data.status) {
-    case 'loading':
-      status.value = 'loading';
-      loadingMessage.value = e.data.data;
-      break;
-    case 'initiate':
-      progressItems.value.push(e.data);
-      break;
-    case 'progress':
-      progressItems.value = progressItems.value.map((item) => {
-        if (item.file === e.data.file) {
-          return { ...item, ...e.data };
-        }
-        return item;
-      });
-      break;
-    case 'done':
-      progressItems.value = progressItems.value.filter((item) => item.file !== e.data.file);
-      break;
-    case 'ready':
-      status.value = 'ready';
-      recorderRef.value.start();
-      break;
-    case 'start':
-      isProcessing.value = true;
-      recorderRef.value.requestData();
-      break;
-    case 'update':
-      tps.value = e.data.tps;
-      break;
-    case 'complete':
-      isProcessing.value = false;
-      text.value = e.data.output;
-      break;
-  }
-};
-  
-  const loadModel = () => {
-    worker.value.postMessage({ type: 'load' });
-    status.value = 'loading';
-  };
-  
-  const handleLanguageChange = (newLanguage) => {
-    recorderRef.value.stop();
-    language.value = newLanguage;
-    recorderRef.value.start();
-  };
-  
-  const reset = () => {
-    recorderRef.value.stop();
-    recorderRef.value.start();
-  };
-  
-  // Watchers and computed properties
-  // Similar to the useEffect hooks in the React example
-  const isModelLoaded = computed(() => status.value === 'ready');
-  watch(chunks, (newChunks) => {
-  if (recording.value && !isProcessing.value && isModelLoaded.value && newChunks.length > 0) {
-    const blob = new Blob(newChunks, { type: recorderRef.value.mimeType });
-    const fileReader = new FileReader();
-    fileReader.onloadend = async () => {
-      const arrayBuffer = fileReader.result;
-      const decoded = await audioContextRef.value.decodeAudioData(arrayBuffer);
-      let audio = decoded.getChannelData(0);
-      if (audio.length > MAX_SAMPLES) {
-        audio = audio.slice(-MAX_SAMPLES);
-      }
-      worker.value.postMessage({
-        type: 'generate',
-        data: { audio, language: language.value },
-      });
-    };
-    fileReader.readAsArrayBuffer(blob);
-  }
-});
+    </template>
 
-watch(status, (newStatus) => {
-  if (newStatus === 'ready' && recorderRef.value) {
-    recorderRef.value.start();
+    <div class="audio-input-methods">
+      <el-tabs v-model="activeInputMethod">
+        <el-tab-pane label="录音" name="recording">
+          <div class="recording-controls">
+            <el-button 
+              type="primary" 
+              @click="startRecording" 
+              :disabled="transcriptionStatus !== 'ready'"
+            >
+              开始录音
+            </el-button>
+            <el-button 
+              type="danger" 
+              @click="stopRecording"
+              :disabled="transcriptionStatus !== 'ready'"
+            >
+              停止录音
+            </el-button>
+          </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="文件上传" name="fileUpload">
+          <el-upload
+            drag
+            :auto-upload="false"
+            :on-change="handleFileUpload"
+            accept=".mp3,.wav,.webm,.ogg"
+          >
+            <el-icon><upload-filled /></el-icon>
+            <div>拖拽文件或点击上传</div>
+          </el-upload>
+        </el-tab-pane>
+
+        <el-tab-pane label="URL输入" name="urlInput">
+          <el-input 
+            v-model="audioUrl" 
+            placeholder="输入音频文件URL"
+            @keyup.enter="processAudioFromUrl"
+          >
+            <template #append>
+              <el-button @click="processAudioFromUrl">转录</el-button>
+            </template>
+          </el-input>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
+    <div class="transcription-result" v-if="transcribedText">
+      <h3>转录结果：</h3>
+      <p>{{ transcribedText }}</p>
+    </div>
+
+    <div v-if="modelLoadingProgress.isLoading" class="loading-progress">
+      {{ modelLoadingProgress.message }}
+    </div>
+  </el-card>
+</template>
+  
+<script setup lang="ts">
+
+const WHISPER_MODELS = {
+  'tiny': 'onnx-community/whisper-tiny',
+  'base': 'onnx-community/whisper-base', 
+  'small': 'onnx-community/whisper-small',
+  'medium': 'onnx-community/whisper-medium',
+  'large': 'onnx-community/whisper-large'
+}
+
+const SUPPORTED_LANGUAGES = {
+  'en': '英语',
+  'zh': '中文',
+  'es': '西班牙语',
+  'fr': '法语',
+  'de': '德语',
+  'ja': '日语',
+  'ru': '俄语',
+  'ar': '阿拉伯语'
+}
+
+const worker = ref(null)
+const selectedModel = ref('base')
+const transcriptionStatus = ref('idle')
+const transcribedText = ref('')
+const audioChunks = ref([])
+const mediaRecorder = ref(null)
+const audioStream = ref(null)
+const activeInputMethod = ref('recording')
+const audioUrl = ref('')
+
+const modelLoadingProgress = reactive({
+  isLoading: false,
+  progress: 0,
+  message: ''
+})
+
+onMounted(() => {
+  worker.value = new Worker(new URL('../../../library/whisperWorker.ts', import.meta.url), {
+    type: 'module'
+  })
+  worker.value.addEventListener('message', handleWorkerMessage)
+  initMediaRecorder()
+})
+
+onUnmounted(() => {
+  worker.value?.removeEventListener('message', handleWorkerMessage)
+  mediaRecorder.value?.stop()
+})
+
+function initMediaRecorder() {
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      audioStream.value = stream
+      mediaRecorder.value = new MediaRecorder(stream)
+      
+      mediaRecorder.value.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.value.push(event.data)
+        }
+      }
+    })
+    .catch(error => {
+      ElMessage.error('无法获取音频设备：' + error)
+    })
+}
+
+function handleWorkerMessage(event) {
+  const { status, data, error } = event.data
+  
+  switch(status) {
+    case 'loading':
+      modelLoadingProgress.isLoading = true
+      modelLoadingProgress.message = data
+      break
+    case 'ready':
+      modelLoadingProgress.isLoading = false
+      transcriptionStatus.value = 'ready'
+      break
+    case 'start':
+      transcriptionStatus.value = 'processing'
+      break
+    case 'complete':
+      transcriptionStatus.value = 'completed'
+      transcribedText.value = data
+      break
+    case 'models_list':
+      console.log('Available models:', data.models)
+      break      
+    case 'error':
+      ElMessage.error(`模型处理错误: ${error}`)
+      transcriptionStatus.value = 'ready'
+      modelLoadingProgress.isLoading = false
+      break      
   }
-});
-  </script>
+}
+
+function loadModel() {
+  worker.value.postMessage({
+    type: 'load', 
+    modelId: WHISPER_MODELS[selectedModel.value]
+  })
+}
+
+function startRecording() {
+  audioChunks.value = []
+  mediaRecorder.value.start()
+}
+
+function stopRecording() {
+  mediaRecorder.value.stop()
   
-  <style scoped>
-  /* Add your styles here */
-  </style>
-  
+  setTimeout(() => {
+    const audioBlob = new Blob(audioChunks.value, { type: 'audio/webm' })
+    processAudioBlob(audioBlob)
+  }, 500)
+}
+
+function handleFileUpload(file) {
+  processAudioBlob(file.raw)
+}
+
+async function processAudioFromUrl() {
+  try {
+    const response = await fetch(audioUrl.value)
+    const audioBlob = await response.blob()
+    processAudioBlob(audioBlob)
+  } catch (error) {
+    ElMessage.error('无法获取音频文件：' + error.message)
+  }
+}
+
+function processAudioBlob(audioBlob) {
+  const fileReader = new FileReader()
+    
+  fileReader.onloadend = async () => {
+    const audioBuffer = fileReader.result
+    worker.value.postMessage({
+      type: 'generate',
+      data: { 
+        audio: audioBuffer,
+        language: selectedLanguage.value,
+        modelId: WHISPER_MODELS[selectedModel.value]
+      }
+    })
+  }
+    
+  fileReader.readAsArrayBuffer(audioBlob)
+}
+</script>

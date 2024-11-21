@@ -1,21 +1,32 @@
+
 <template>
-    <select
-      class="border rounded-lg p-2 max-w-[100px]"
-      :value="language"
-      @change="handleLanguageChange"
+  <select 
+    class="border rounded-lg p-2 max-w-[100px]" 
+    :value="language" 
+    @change="handleLanguageChange"
+  >
+    <option 
+      v-for="(key, index) in Object.keys(LANGUAGES)" 
+      :key="key" 
+      :value="key"
     >
-      <option v-for="(name, key) in languageNames" :key="key" :value="key">
-        {{ name }}
-      </option>
-    </select>
-  </template>
+      {{ names[index] }}
+    </option>
+  </select>
+</template>
   
-<script setup="ts">
+<script setup lang="ts">
   const props = defineProps({
-    language: String,
-    setLanguage: Function
-  });
-  
+    language: String
+  })
+
+  const titleCase = (str) => {
+    str = str.toLowerCase()
+    return (str.match(/\w+.?/g) || [])
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("")
+  }  
+    
   const LANGUAGES = {
     en: "english",
     zh: "chinese",
@@ -118,25 +129,13 @@
     su: "sundanese",
   };
   
-  const titleCase = (str) => {
-    str = str.toLowerCase();
-    return (str.match(/\w+.?/g) || [])
-      .map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join("");
-  };
-  
-  const languageNames = computed(() => {
-    return Object.keys(LANGUAGES).reduce((acc, key) => {
-      acc[key] = titleCase(LANGUAGES[key]);
-      return acc;
-    }, {});
-  });
-  
+  const emit = defineEmits(['update:language'])
+
   const handleLanguageChange = (event) => {
-    props.setLanguage(event.target.value);
-  };
+    emit('update:language', event.target.value)
+  }
+
+  const names = Object.values(LANGUAGES).map(titleCase)  
   </script>
   
   <style scoped>
