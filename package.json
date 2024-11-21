@@ -22,7 +22,7 @@
     "@ffmpeg/core": "^0.12.6",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/util": "^0.12.1",
-    "@huggingface/transformers": "^3.0.1",
+    "@huggingface/transformers": "^3.0.2",
     "@simonwep/pickr": "^1.9.1",
     "@types/node": "^20.14.11",
     "@unhead/vue": "^1.11.11",

@@ -222,7 +222,7 @@
       env.allowLocalModels = false;
       env.remoteHost = "https://briaai.potatotools.top/";
       env.remotePathTemplate = "{model}";   
-      env.backends.onnx.wasm.wasmPaths = "/wasm/";
+      env.backends.onnx.wasm.wasmPaths = "/wasm/transformer.js/3.0.2/";
       // Proxy the WASM backend to prevent the UI from freezing
       env.backends.onnx.wasm.proxy = true;
 
