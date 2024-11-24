@@ -1,241 +1,408 @@
 <template>
-  <el-card class="whisper-transcription-card">
-    <template #header>
-      <div class="card-header">
-        <h2>语音转文字</h2>
-        <div class="model-selection">
-          <el-select 
-            v-model="selectedModel" 
-            placeholder="选择模型"
-            @change="loadModel"
+  <div v-if="IS_WEBGPU_AVAILABLE" class="app-container">
+    <el-card class="main-card" :body-style="{ padding: '20px' }">
+      <div class="header">
+        <h1>Whisper WebGPU</h1>
+        <h2>Real-time in-browser speech recognition</h2>
+      </div>
+
+      <div class="content">
+        <template v-if="status === null">
+          <p class="description">
+            You are about to load
+            <el-link
+              href="https://huggingface.co/onnx-community/whisper-base"
+              type="primary"
+              target="_blank"
+            >
+              whisper-base
+            </el-link>
+            , a 73 million parameter speech recognition model that is optimized
+            for inference on the web. Once downloaded, the model (~200 MB) will be
+            cached and reused when you revisit the page.
+            
+            <el-divider />
+            
+            Everything runs directly in your browser using
+            <el-link
+              href="https://huggingface.co/docs/transformers.js"
+              type="primary"
+              target="_blank"
+            >
+              🤗 Transformers.js
+            </el-link>
+            and ONNX Runtime Web, meaning no data is sent to a server. You can even
+            disconnect from the internet after the model has loaded!
+          </p>
+
+          <el-button
+            type="primary"
+            :disabled="status !== null"
+            @click="loadModel"
+            size="large"
           >
-            <el-option 
-              v-for="(value, key) in WHISPER_MODELS" 
-              :key="key" 
-              :label="key" 
-              :value="key"
+            Load model
+          </el-button>
+        </template>
+
+        <el-card v-if="status" class="visualizer-card" shadow="never">
+          <AudioVisualizer :stream="stream" />
+          <div v-if="status === 'ready'" class="text-output">
+            <div class="output-box">
+              {{ text }}
+            </div>
+            <span v-if="tps" class="tps-info">
+              {{ tps.toFixed(2) }} tok/s
+            </span>
+          </div>
+        </el-card>
+
+        <div v-if="status === 'ready'" class="controls">
+          <LanguageSelector
+            :language="language"
+            @update:language="handleLanguageChange"
+          />
+          <el-button @click="resetRecording" size="default">
+            Reset
+          </el-button>
+        </div>
+
+        <div v-if="status === 'loading'" class="loading-container">
+          <el-card shadow="never" class="loading-card">
+            <template #header>
+              <div class="loading-header">
+                {{ loadingMessage }}
+              </div>
+            </template>
+            <Progress
+              v-for="(item, index) in progressItems"
+              :key="index"
+              :text="item.file"
+              :percentage="item.progress"
+              :total="item.total"
             />
-          </el-select>
-          <el-select 
-            v-model="selectedLanguage" 
-            placeholder="选择语言"
-          >
-            <el-option 
-              v-for="(lang, code) in SUPPORTED_LANGUAGES" 
-              :key="code" 
-              :label="lang" 
-              :value="code"
-            />
-          </el-select>
+          </el-card>
         </div>
       </div>
-    </template>
+    </el-card>
+  </div>
 
-    <div class="audio-input-methods">
-      <el-tabs v-model="activeInputMethod">
-        <el-tab-pane label="录音" name="recording">
-          <div class="recording-controls">
-            <el-button 
-              type="primary" 
-              @click="startRecording" 
-              :disabled="transcriptionStatus !== 'ready'"
-            >
-              开始录音
-            </el-button>
-            <el-button 
-              type="danger" 
-              @click="stopRecording"
-              :disabled="transcriptionStatus !== 'ready'"
-            >
-              停止录音
-            </el-button>
-          </div>
-        </el-tab-pane>
-
-        <el-tab-pane label="文件上传" name="fileUpload">
-          <el-upload
-            drag
-            :auto-upload="false"
-            :on-change="handleFileUpload"
-            accept=".mp3,.wav,.webm,.ogg"
-          >
-            <el-icon><upload-filled /></el-icon>
-            <div>拖拽文件或点击上传</div>
-          </el-upload>
-        </el-tab-pane>
-
-        <el-tab-pane label="URL输入" name="urlInput">
-          <el-input 
-            v-model="audioUrl" 
-            placeholder="输入音频文件URL"
-            @keyup.enter="processAudioFromUrl"
-          >
-            <template #append>
-              <el-button @click="processAudioFromUrl">转录</el-button>
-            </template>
-          </el-input>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
-
-    <div class="transcription-result" v-if="transcribedText">
-      <h3>转录结果：</h3>
-      <p>{{ transcribedText }}</p>
-    </div>
-
-    <div v-if="modelLoadingProgress.isLoading" class="loading-progress">
-      {{ modelLoadingProgress.message }}
-    </div>
-  </el-card>
+  <div v-else class="webgpu-error">
+    <el-card class="error-card">
+      <el-result
+        icon="error"
+        title="WebGPU is not supported"
+        sub-title="This browser does not support WebGPU features"
+      />
+    </el-card>
+  </div>
 </template>
   
 <script setup lang="ts">
+import AudioVisualizer from './Whisper-components/AudioVisualizer.vue'
+import Progress from './Whisper-components/Progress.vue'
+import LanguageSelector from './Whisper-components/LanguageSelector.vue'
 
-const WHISPER_MODELS = {
-  'tiny': 'onnx-community/whisper-tiny',
-  'base': 'onnx-community/whisper-base', 
-  'small': 'onnx-community/whisper-small',
-  'medium': 'onnx-community/whisper-medium',
-  'large': 'onnx-community/whisper-large'
-}
+const WHISPER_SAMPLING_RATE = 16000
+const MAX_AUDIO_LENGTH = 30 // seconds
+const MAX_SAMPLES = WHISPER_SAMPLING_RATE * MAX_AUDIO_LENGTH
+const IS_WEBGPU_AVAILABLE = !!navigator.gpu
 
-const SUPPORTED_LANGUAGES = {
-  'en': '英语',
-  'zh': '中文',
-  'es': '西班牙语',
-  'fr': '法语',
-  'de': '德语',
-  'ja': '日语',
-  'ru': '俄语',
-  'ar': '阿拉伯语'
-}
-
+// 状态变量
 const worker = ref(null)
-const selectedModel = ref('base')
-const transcriptionStatus = ref('idle')
-const transcribedText = ref('')
-const audioChunks = ref([])
-const mediaRecorder = ref(null)
-const audioStream = ref(null)
-const activeInputMethod = ref('recording')
-const audioUrl = ref('')
+const recorderRef = ref(null)
+const audioContextRef = ref(null)
 
-const modelLoadingProgress = reactive({
-  isLoading: false,
-  progress: 0,
-  message: ''
+const status = ref(null)
+const loadingMessage = ref('')
+const progressItems = ref([])
+
+const text = ref('')
+const tps = ref(null)
+const language = ref('en')
+
+const recording = ref(false)
+const isProcessing = ref(false)
+const chunks = ref([])
+const stream = ref(null)
+
+// 工作线程处理函数
+const handleWorkerMessage = (e) => {
+  switch (e.data.status) {
+    case 'loading':
+      status.value = 'loading'
+      loadingMessage.value = e.data.data
+      break
+
+    case 'initiate':
+      progressItems.value = [...progressItems.value, e.data]
+      break
+
+    case 'progress':
+      progressItems.value = progressItems.value.map((item) => {
+        if (item.file === e.data.file) {
+          return { ...item, ...e.data }
+        }
+        return item
+      })
+      break
+
+    case 'done':
+      progressItems.value = progressItems.value.filter(
+        (item) => item.file !== e.data.file
+      )
+      break
+
+    case 'ready':
+      status.value = 'ready'
+      recorderRef.value?.start()
+      break
+
+    case 'start':
+      isProcessing.value = true
+      recorderRef.value?.requestData()
+      break
+
+    case 'update':
+      tps.value = e.data.tps
+      break
+
+    case 'complete':
+      isProcessing.value = false
+      text.value = e.data.output
+      break
+  }
+}
+
+// 初始化录音设备
+const initializeRecorder = async () => {
+  if (recorderRef.value) return
+
+  try {
+    if (navigator.mediaDevices.getUserMedia) {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      stream.value = mediaStream
+
+      recorderRef.value = new MediaRecorder(mediaStream)
+      audioContextRef.value = new AudioContext({
+        sampleRate: WHISPER_SAMPLING_RATE,
+      })
+
+      recorderRef.value.onstart = () => {
+        recording.value = true
+        chunks.value = []
+      }
+
+      recorderRef.value.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.value = [...chunks.value, e.data]
+        } else {
+          setTimeout(() => {
+            recorderRef.value?.requestData()
+          }, 25)
+        }
+      }
+
+      recorderRef.value.onstop = () => {
+        recording.value = false
+      }
+    }
+  } catch (err) {
+    console.error('The following error occurred: ', err)
+  }
+}
+
+// 处理音频数据
+const processAudioData = async () => {
+  if (!recorderRef.value || !recording.value || isProcessing.value || status.value !== 'ready') return
+
+  if (chunks.value.length > 0) {
+    const blob = new Blob(chunks.value, { type: recorderRef.value.mimeType })
+    const fileReader = new FileReader()
+
+    fileReader.onloadend = async () => {
+      const arrayBuffer = fileReader.result
+      const decoded = await audioContextRef.value.decodeAudioData(arrayBuffer)
+      let audio = decoded.getChannelData(0)
+      if (audio.length > MAX_SAMPLES) {
+        audio = audio.slice(-MAX_SAMPLES)
+      }
+
+      worker.value.postMessage({
+        type: 'generate',
+        data: { audio, language: language.value },
+      })
+    }
+    fileReader.readAsArrayBuffer(blob)
+  } else {
+    recorderRef.value?.requestData()
+  }
+}
+
+// 加载模型
+const loadModel = () => {
+  worker.value.postMessage({ type: 'load' })
+  status.value = 'loading'
+}
+
+// 重置录音
+const resetRecording = () => {
+  recorderRef.value?.stop()
+  recorderRef.value?.start()
+}
+
+// 更改语言
+const handleLanguageChange = (newLang) => {
+  recorderRef.value?.stop()
+  language.value = newLang
+  recorderRef.value?.start()
+}
+
+// 监听chunks变化以处理音频数据
+watch([chunks], () => {
+  processAudioData()
 })
 
 onMounted(() => {
-  worker.value = new Worker(new URL('../../../library/whisperWorker.ts', import.meta.url), {
-    type: 'module'
-  })
-  worker.value.addEventListener('message', handleWorkerMessage)
-  initMediaRecorder()
+  // 初始化 Web Worker
+  if (!worker.value) {
+    worker.value = new Worker(new URL('../../../library/whisperWorker.ts', import.meta.url), {
+      type: 'module',
+    })
+    worker.value.addEventListener('message', handleWorkerMessage)
+  }
+  
+  //initializeRecorder()
 })
 
 onUnmounted(() => {
   worker.value?.removeEventListener('message', handleWorkerMessage)
-  mediaRecorder.value?.stop()
+  recorderRef.value?.stop()
+  stream.value?.getTracks().forEach(track => track.stop())
 })
-
-function initMediaRecorder() {
-  navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(stream => {
-      audioStream.value = stream
-      mediaRecorder.value = new MediaRecorder(stream)
-      
-      mediaRecorder.value.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunks.value.push(event.data)
-        }
-      }
-    })
-    .catch(error => {
-      ElMessage.error('无法获取音频设备：' + error)
-    })
-}
-
-function handleWorkerMessage(event) {
-  const { status, data, error } = event.data
-  
-  switch(status) {
-    case 'loading':
-      modelLoadingProgress.isLoading = true
-      modelLoadingProgress.message = data
-      break
-    case 'ready':
-      modelLoadingProgress.isLoading = false
-      transcriptionStatus.value = 'ready'
-      break
-    case 'start':
-      transcriptionStatus.value = 'processing'
-      break
-    case 'complete':
-      transcriptionStatus.value = 'completed'
-      transcribedText.value = data
-      break
-    case 'models_list':
-      console.log('Available models:', data.models)
-      break      
-    case 'error':
-      ElMessage.error(`模型处理错误: ${error}`)
-      transcriptionStatus.value = 'ready'
-      modelLoadingProgress.isLoading = false
-      break      
-  }
-}
-
-function loadModel() {
-  worker.value.postMessage({
-    type: 'load', 
-    modelId: WHISPER_MODELS[selectedModel.value]
-  })
-}
-
-function startRecording() {
-  audioChunks.value = []
-  mediaRecorder.value.start()
-}
-
-function stopRecording() {
-  mediaRecorder.value.stop()
-  
-  setTimeout(() => {
-    const audioBlob = new Blob(audioChunks.value, { type: 'audio/webm' })
-    processAudioBlob(audioBlob)
-  }, 500)
-}
-
-function handleFileUpload(file) {
-  processAudioBlob(file.raw)
-}
-
-async function processAudioFromUrl() {
-  try {
-    const response = await fetch(audioUrl.value)
-    const audioBlob = await response.blob()
-    processAudioBlob(audioBlob)
-  } catch (error) {
-    ElMessage.error('无法获取音频文件：' + error.message)
-  }
-}
-
-function processAudioBlob(audioBlob) {
-  const fileReader = new FileReader()
-    
-  fileReader.onloadend = async () => {
-    const audioBuffer = fileReader.result
-    worker.value.postMessage({
-      type: 'generate',
-      data: { 
-        audio: audioBuffer,
-        language: selectedLanguage.value,
-        modelId: WHISPER_MODELS[selectedModel.value]
-      }
-    })
-  }
-    
-  fileReader.readAsArrayBuffer(audioBlob)
-}
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--el-bg-color-page);
+}
+
+.main-card {
+  max-width: 800px;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.logo {
+  width: 50%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--el-text-color-primary);
+  margin: 16px 0;
+}
+
+h2 {
+  font-size: 20px;
+  color: var(--el-text-color-regular);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.description {
+  max-width: 480px;
+  text-align: center;
+  line-height: 1.6;
+  color: var(--el-text-color-regular);
+  margin: 20px 0;
+}
+
+.visualizer-card {
+  width: 100%;
+  max-width: 500px;
+}
+
+.text-output {
+  position: relative;
+  margin-top: 16px;
+}
+
+.output-box {
+  min-height: 80px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-border-radius-base);
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+}
+
+.tps-info {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  background-color: var(--el-bg-color);
+  border-radius: var(--el-border-radius-small);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 16px;
+}
+
+.loading-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.loading-card {
+  background-color: var(--el-bg-color-page);
+}
+
+.loading-header {
+  text-align: center;
+  color: var(--el-text-color-primary);
+}
+
+.webgpu-error {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--el-bg-color);
+}
+
+.error-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px;
+}
+</style>
