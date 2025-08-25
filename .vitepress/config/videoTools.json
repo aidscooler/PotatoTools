@@ -4,11 +4,5 @@
       "title": "视频格式转换",
       "details": "基于ffmpeg.wasm实现的视频格式转换工具",
       "link": "/toolsEntrance/video/VideoConverter.vue"
-    },
-    {
-      "icon": { "src": "/icons/videotools/VideoConverter.png" },
-      "title": "Whisper",
-      "details": "基于openai开源的whisper模型实现的音频转文字工具",
-      "link": "/toolsEntrance/video/Whisper.vue"
     }
 ]

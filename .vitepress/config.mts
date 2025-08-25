@@ -4,6 +4,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import path from 'path'
 import '../types.d.ts'
 
@@ -32,7 +33,7 @@ export default defineConfig({
 
     sidebar: genSidebar('./.vitepress/config/sidebar.json'),
 
-    lastUpdated: {
+    lastUpdated: { 
       text: '最后更新',
       formatOptions: {
         dateStyle: 'full',
@@ -82,6 +83,7 @@ export default defineConfig({
   vite: { 
     plugins: [
       //Vue(),
+      nodePolyfills(),
       AutoImport({
         // 自动导入vue相关组件 ref onMounted等
         imports: ['vue','@vueuse/core'],
